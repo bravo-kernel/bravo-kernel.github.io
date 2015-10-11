@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>How to maintain your personal Octostrap3 theme | Bravo Kernel</title>
+  <meta name="author" content="bravo-kernel">
+  
+  <meta name="description" content="Make sure you have created a personal fork of the Octostrap3 repository.
+Add theme as a Git submoduleAdd personal Octostrap3 theme as a Git submodule:">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="How to maintain your personal Octostrap3 theme"/>
+  <meta property="og:site_name" content="Bravo Kernel"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Bravo Kernel" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40048049-1']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Bravo Kernel</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">Feed</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-08-04T09:22:47.000Z"><a href="/2014/08/how-to-maintain-your-personal-octostrap3-theme/">Aug 4 2014</a></time>
+		
+			<span class="updated" title="Post Updated"><span>Oct 11 2015</span></span>
+        
+		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2014-08-04-how-to-maintain-your-personal-octostrap3-theme.md">Improve on Github</a></div>
+      
+      
+  
+    <h1 class="title">How to maintain your personal Octostrap3 theme</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Make sure you have created a personal fork of the <a href="https://github.com/kAworu/octostrap3" title="Octostrap3 repository" target="_blank" rel="external">Octostrap3 repository</a>.</p>
+<h2 id="Add_theme_as_a_Git_submodule">Add theme as a Git submodule</h2><p>Add personal Octostrap3 theme as a Git submodule:</p>
+<pre><code>cd &lt;path-to-repos&gt;/octopress
+git submodule add git@github<span class="class">.com</span>:bravo-kernel/octostrap3<span class="class">.git</span> .themes/octostrap3
+git add <span class="class">.gitmodules</span>
+git commit -m <span class="string">"Adding Octostrap3 as a Git submodule"</span>
+git push origin
+</code></pre><h2 id="Update_theme">Update theme</h2><pre><code><span class="built_in">cd</span> &lt;<span class="built_in">path</span>-to-repos&gt;/octopress
+<span class="built_in">cd</span> .themes/octostrap3
+git checkout master
+</code></pre><p>Edit some files (see the <a href="http://octopress.org/docs/theme" title="Octopress documentation on themes" target="_blank" rel="external">Octopress theme documentation</a>).</p>
+<h2 id="Install_updated_theme">Install updated theme</h2><p>Install updated theme (or it will not be used when when generating new pages):</p>
+<pre><code><span class="keyword">cd</span> &lt;path-<span class="keyword">to</span>-repos&gt;/octopress
+rake <span class="string">'install[octostrap3]'</span>
+</code></pre><h2 id="Generate_pages_using_updated_theme">Generate pages using updated theme</h2><p>Generate and deploy gh-pages using the updated theme:</p>
+<pre><code>  <span class="built_in">cd</span> &lt;<span class="built_in">path</span>-to-repos&gt;/octopress
+rake generate
+rake deploy
+</code></pre><h2 id="Save_updated_theme">Save updated theme</h2><pre><code><span class="keyword">cd</span> &lt;path-<span class="keyword">to</span>-repos&gt;/octopress/.themes/octostrap3
+git <span class="built_in">add</span> .
+git commit -<span class="keyword">m</span> <span class="string">"Updating Octostrap3 theme"</span>
+git push origin
+</code></pre><h2 id="Update_Git_submodule">Update Git submodule</h2><p>Point Git theme submodule to the latest version:</p>
+<pre><code><span class="keyword">cd</span> &lt;path-<span class="keyword">to</span>-repos&gt;/octopress
+git <span class="built_in">add</span> .themes/octostrap3
+git commit -<span class="keyword">m</span> <span class="string">"Updating octostrap3 submodule"</span>
+git push origin
+</code></pre>
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/web/">web</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/octopress/">octopress</a>, <a href="/tags/octostrap3/">octostrap3</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="sponsor">
+  <h1 class="title">Support this blog</h1>
+
+  <div class="leaderboard">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- bravo-kernel-blog-leaderboard -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1161412231963156"
+         data-ad-slot="4755382371"
+         data-ad-format="auto">
+    </ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+</section>
+
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:bravo-kernel.com">
+  </form>
+</div>
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/api/" style="font-size: 16px;">api</a> <a href="/tags/apple/" style="font-size: 10px;">apple</a> <a href="/tags/cakephp/" style="font-size: 18px;">cakephp</a> <a href="/tags/cakephp3/" style="font-size: 16px;">cakephp3</a> <a href="/tags/chef/" style="font-size: 10px;">chef</a> <a href="/tags/chef-dk/" style="font-size: 10px;">chef-dk</a> <a href="/tags/cocktails/" style="font-size: 10px;">cocktails</a> <a href="/tags/composer/" style="font-size: 12px;">composer</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/debian/" style="font-size: 20px;">debian</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/dutch/" style="font-size: 10px;">dutch</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/fim/" style="font-size: 10px;">fim</a> <a href="/tags/foc/" style="font-size: 10px;">foc</a> <a href="/tags/git/" style="font-size: 20px;">git</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/ipad/" style="font-size: 10px;">ipad</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jwt/" style="font-size: 10px;">jwt</a> <a href="/tags/kitchen/" style="font-size: 10px;">kitchen</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/microsoft/" style="font-size: 14px;">microsoft</a> <a href="/tags/minecraft/" style="font-size: 12px;">minecraft</a> <a href="/tags/misc/" style="font-size: 12px;">misc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/mssql/" style="font-size: 10px;">mssql</a> <a href="/tags/nginx/" style="font-size: 12px;">nginx</a> <a href="/tags/octopress/" style="font-size: 16px;">octopress</a> <a href="/tags/octostrap3/" style="font-size: 12px;">octostrap3</a> <a href="/tags/office/" style="font-size: 10px;">office</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/phpcs/" style="font-size: 10px;">phpcs</a> <a href="/tags/rest/" style="font-size: 16px;">rest</a> <a href="/tags/security/" style="font-size: 12px;">security</a> <a href="/tags/server-2012/" style="font-size: 10px;">server-2012</a> <a href="/tags/shellshock/" style="font-size: 10px;">shellshock</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/ubuntu/" style="font-size: 12px;">ubuntu</a> <a href="/tags/vagrant/" style="font-size: 10px;">vagrant</a> <a href="/tags/validator/" style="font-size: 10px;">validator</a> <a href="/tags/wheezy/" style="font-size: 16px;">wheezy</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a>
+  </div>
+</div>
+
+
+  <div class="advertisement">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- bravo-kernel-blog-270 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:270px;height:270px"
+		 data-ad-client="ca-pub-1161412231963156"
+		 data-ad-slot="9643145573"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 bravo-kernel
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'bravo-kernel';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

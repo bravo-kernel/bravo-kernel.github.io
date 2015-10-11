@@ -1,0 +1,433 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Handige Minecraft weetjes (Dutch) | Bravo Kernel</title>
+  <meta name="author" content="bravo-kernel">
+  
+  <meta name="description" content="Multiverse
+Multiverse website
+Alle Multiverse commando’s
+Alle Multiverse per-wereld commando’s
+
+Multiverse spawnsOm als speler naar de spawn te gaan v">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Handige Minecraft weetjes (Dutch)"/>
+  <meta property="og:site_name" content="Bravo Kernel"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Bravo Kernel" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40048049-1']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Bravo Kernel</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">Feed</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-06-27T08:38:10.000Z"><a href="/2015/06/minecraft-tips-and-tricks-dutch/">Jun 27 2015</a></time>
+		
+			<span class="updated" title="Post Updated"><span>Oct 11 2015</span></span>
+        
+		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-06-27-minecraft-tips-and-tricks-dutch.md">Improve on Github</a></div>
+      
+      
+  
+    <h1 class="title">Handige Minecraft weetjes (Dutch)</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h2 id="Multiverse">Multiverse</h2><ul>
+<li><a href="http://dev.bukkit.org/bukkit-plugins/multiverse-core/" target="_blank" rel="external">Multiverse website</a></li>
+<li><a href="https://github.com/Multiverse/Multiverse-Core/wiki/Command-Reference" target="_blank" rel="external">Alle Multiverse commando’s</a></li>
+<li><a href="https://github.com/Multiverse/Multiverse-Core/wiki/World-properties" target="_blank" rel="external">Alle Multiverse per-wereld commando’s</a></li>
+</ul>
+<h2 id="Multiverse_spawns">Multiverse spawns</h2><p>Om als speler naar de spawn te gaan van de wereld waar je nu in zit:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mv spawn</span><br></pre></td></tr></table></figure>
+<p>Om als speler naar de spawn van een andere wereld dan degene waar je nu in zit te gaan:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mv tp &lt;naam-van-je-wereld&gt;</span><br></pre></td></tr></table></figure>
+<p>Om de standaard spawn wereld voor <strong>nieuwe</strong> spelers (die voor het eerst op je server inloggen)
+in te stellen voer je deze commando’s als admin uit:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/mv conf firstspawnoverride <span class="literal">true</span></span><br><span class="line">/mv conf firstspawnworld &lt;naam-van-je-wereld&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Multiverse_werelden">Multiverse werelden</h2><h3 id="Namen">Namen</h3><p>Omdat je de namen van je werelden veel zal moeten gebruiken (voor portals, aliassen, etc) is het niet
+verstandig om “zo maar namen” te gebruiken. Probeer een slimme naamgeving te gebruiken die je leven
+als admin een stuk makkelijker zal maken. Goede tips zijn:</p>
+<ul>
+<li>gebruik alleen kleine letters</li>
+<li>gebruik volgnummers voor je werelden (bijv. creative1, creative2, kingdom1)</li>
+</ul>
+<h3 id="Seeds">Seeds</h3><p>Minecraft werelden worden gemaakt met een <code>seed</code>. Seeds zijn combinaties van letters en/of cijfers
+die het uiterlijk van je wereld bepalen. Je kunt zelf een seed bedenken of er één pikken van de
+vele sites die seeds bijhouden zoals <a href="http://www.minecraftseeds.co/" target="_blank" rel="external">http://www.minecraftseeds.co/</a>.</p>
+<h3 id="Nieuwe_wereld_maken">Nieuwe wereld maken</h3><p>Om een nieuwe unieke Multiverse wereld te maken met je eigen seed voer je dit commando uit:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv create &lt;naam-van-je-wereld&gt; NORMAL <span class="operator">-s</span> <span class="string">"Mijn eigen unieke seed!"</span></span><br></pre></td></tr></table></figure>
+<p><strong>Let op:</strong> vergeet je nieuwe wereld niet toe te voegen aan het lijstje met <code>PerWorldInventory</code>
+werelden!</p>
+<h3 id="Flat_wereld_maken">Flat wereld maken</h3><p>Soms wil je liever een platte wereld, voer dan dit commando uit:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mv create flatworld1 NORMAL -t FLAT</span><br></pre></td></tr></table></figure>
+<p><strong>Let op:</strong> vergeet je nieuwe wereld niet toe te voegen aan het lijstje met <code>PerWorldInventory</code>
+werelden!</p>
+<h3 id="Gamemode_instellen">Gamemode instellen</h3><p>Je kunt de gamemode voor je wereld instellen op <code>creative</code> of <code>survival</code> door
+één van deze commando’s te kiezen:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/mvm <span class="built_in">set</span> gamemode creative &lt;naam-van-je-wereld&gt;</span><br><span class="line">/mvm <span class="built_in">set</span> gamemode survival &lt;naam-van-je-wereld&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Moeilijkheid_instellen">Moeilijkheid instellen</h3><p>Je kunt de moeilijkheid (difficulty) voor je wereld instellen door één van deze commando’s te kiezen:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/mvm <span class="built_in">set</span> diff peaceful &lt;naam-van-je-wereld&gt;</span><br><span class="line">/mvm <span class="built_in">set</span> diff easy &lt;naam-van-je-wereld&gt;</span><br><span class="line">/mvm <span class="built_in">set</span> diff normal &lt;naam-van-je-wereld&gt;</span><br><span class="line">/mvm <span class="built_in">set</span> diff hard &lt;naam-van-je-wereld&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Monsters_en_dieren_uitschakelen">Monsters en dieren uitschakelen</h3><p>Als je niet wilt dat er monsters of dieren in je wereld spawnen gebruik je één van de volgende
+commando’s:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/mvm <span class="built_in">set</span> monsters <span class="literal">false</span> &lt;naam-van-je-wereld&gt;</span><br><span class="line">/mvm <span class="built_in">set</span> animals <span class="literal">false</span> &lt;naam-van-je-wereld&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Bestaande_monsters_en_dieren_verwijderen">Bestaande monsters en dieren verwijderen</h3><p>Soms zijn er al monsters of dieren gespawned in je wereld. Gebruik één van de volgende commando’s
+om ze uit je wereld te verwijderen:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/mv purge &lt;naam-van-je-wereld&gt; monsters</span><br><span class="line">/mv purge &lt;naam-van-je-wereld&gt; animals</span><br></pre></td></tr></table></figure>
+<h3 id="Weer_instellen">Weer instellen</h3><p>Met het volgende commando kun je het weer voor je wereld uitschakelen:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mvm <span class="built_in">set</span> weather <span class="literal">false</span> &lt;naam-van-je-wereld&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Wereld_verwijderen">Wereld verwijderen</h3><p>Denk altijd goed na voordat je een wereld weggooit en maak het liefst eerst een backup zodat je
+nooit per ongeluk al het werk van je spelers weggooit!</p>
+<p>Om een wereld te verwijderen voer je eerst dit commando uit:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mv delete &lt;naam-van-je-wereld&gt;</span><br></pre></td></tr></table></figure>
+<p>Daarna moet je binnen 15 seconden bevestigen met:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mvconfirm</span><br></pre></td></tr></table></figure>
+<h2 id="Multiverse_Portals">Multiverse Portals</h2><ul>
+<li><a href="http://dev.bukkit.org/bukkit-plugins/multiverse-portals/" target="_blank" rel="external">Multiverse-Portals plugin</a></li>
+<li><a href="https://github.com/Multiverse/Multiverse-Portals/wiki/Basic-portal-tutorial" target="_blank" rel="external">Multiverse-Portal voorbeeld</a></li>
+</ul>
+<h3 id="Nieuw_portaal_maken">Nieuw portaal maken</h3><p><strong>Let op:</strong> je kunt geen portals maken als de <code>Worldedit</code> plugin aanstaat dus zorg er eerst voor
+dat je de Worledit plugin uitschakelt. Nadat je het portal gemaakt hebt kun je Worldedit plugin
+weer inschakelen.</p>
+<p>Om een nieuw portal te maken bouw je eerst een structuur zoals in het voorbeeld hieronder:</p>
+<p>Zet daarna de portal wand aan met dit commando:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mvp wand</span><br></pre></td></tr></table></figure>
+<p>Stel nu het 1e coordinaat in door met je wand linksonderin je structuur te klikken, klik daarna
+rechtsboven om het 2e coordinaat in stellen.</p>
+<p>Als het goed is kun je nu je portal naar een andere wereld aanmaken met het volgende commando:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mvp create &lt;naam-van-je-portal&gt; w:&lt;naam-van-de-wereld-waar-het-portal-uitkomt&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>Let op:</strong> je kunt je portal vullen met alles behalve nether, nether zorgt er voor dat je portal
+niet zal werken. Een goed alternatief is lava of water.</p>
+<h3 id="Portal_vrijgeven_(rechten)">Portal vrijgeven (rechten)</h3><p>Standaard kunnen alleen OPs je nieuwe portal gebruiken en dat is meestal niet waar je ze voor
+gebouwd hebt. Om er voor te zorgen dat ook normale spelers de portals kunnen gebruiken voer je
+deze twee commando’s uit:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/mv conf enforceaccess <span class="literal">false</span></span><br><span class="line">/mvp conf enforceportalaccess <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<h2 id="Multiverse_tweaks">Multiverse tweaks</h2><h3 id="Chat_prefix_uitschakelen">Chat prefix uitschakelen</h3><p>Multiverse zet de naam van de wereld van waaruit gechat wordt voor het chatbericht en dat is….
+gewoon irritant. Schakel het uit met het volgende commando:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/mv conf prefixchat <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<h2 id="OPs">OPs</h2><p>Om te zien wie er allemaal OP zijn op je server:</p>
+<ol>
+<li>log in op de website</li>
+<li>Ga naar <code>Files</code> &gt; <code>FTP File Access</code></li>
+<li>open het bestand <code>ops.json</code></li>
+</ol>
+<h2 id="HomeSpawnPlus">HomeSpawnPlus</h2><p>Gebruik de <a href="http://dev.bukkit.org/bukkit-plugins/homespawnplus/" target="_blank" rel="external">HomeSpawnPlus</a>
+plugin om in te stellen dat iedere speler bij het inloggen (joinen)
+in een bepaalde Multiverse wereld terecht komt. Bijvoorbeeld handig als je wilt
+dat iedereen na het inloggen in je hub wereld terecht komt.</p>
+<h3 id="Spawn_instellen_voor_een_wereld">Spawn instellen voor een wereld</h3><p>Om de spawn in te stellen voor een wereld <strong>ga je eerst naar die wereld</strong>. Zoek daarna een mooi
+plekje om te spawnen en voer het volgende command uit:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/setspawn</span><br></pre></td></tr></table></figure>
+<h3 id="Standaard_spawn_instellen_voor_je_server">Standaard spawn instellen voor je server</h3><p>Volg deze stappen om iedere speler die je server bezoekt via dezelfde spawn binnen te laten komen.</p>
+<p>Stel eerst de naam van de wereld in die je als standaard wereld wilt gebruiken.
+Open hiervoor <code>core.yml</code> en pas de <code>defaultWorld</code> aan. Hieronder zie je
+een voorbeeld waarbij de wereld <code>hub</code> als standaard wereld wordt gebruikt.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># The default/main world. Strategies reference this as the default&#10;# world, you can change that here if you like.&#10;defaultWorld: hub</span><br></pre></td></tr></table></figure>
+<p>Open daarna <code>events.yml</code> en stel bij het <code>onJoin</code> event in dat de wereld
+die je hierboven als standaard wereld hebt ingesteld (hub) moet bij het joinen
+van je server als spawn wereld (spawnDefaultWorld) moet worden gebruikt:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">events:&#10;  # strategies to use when player is joining the game&#10;  onJoin:&#10;    - spawnNewPlayer&#10;    - spawnDefaultWorld</span><br></pre></td></tr></table></figure>
+<p>Reload je server en iedereen (ook OPs) landen voortaan netjes in je hub wereld.</p>
+<h2 id="SuperLogger">SuperLogger</h2><p>De <a href="https://github.com/zack6849/SuperLogger" target="_blank" rel="external">SuperLogger</a> plugin houdt bij
+wie allemaal inlogt op je server en welke commando’s men wanneer uitgevoerd heeft. Handig als je
+bijvoorbeeld wilt weten wie iemand OP heeft gegeven.</p>
+<ol>
+<li>log in op de website</li>
+<li>Ga naar <code>Files</code> &gt; <code>FTP File Access</code></li>
+<li>Open de map <code>Plugins</code> &gt; <code>SuperLogger</code></li>
+<li>De logs kun je per dag vinden in de map <code>logs</code></li>
+</ol>
+<p>Instellingen kun je aanpassen in <code>config.yml</code>:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto-update: true&#10;update-notify: true&#10;debug: false&#10;log:&#10;  commands: true&#10;  #do we check if a command is even a real command before we log it?&#10;  check-command-exists: false&#10;  chat: false&#10;  join: true&#10;  quit: true&#10;  kick: false&#10;  death: false&#10;  #do we log disallowed connections? (banned, not whitelisted, full server, etc)&#10;  failed-connections: true&#10;  player-ip: true&#10;  player-uuid: true&#10;  coordinates: true&#10;#a list of commands ignored by superlogger, for privacy reasons.&#10;blacklist:&#10;  - &#39;login&#39;&#10;  - &#39;register&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="BetterAlias">BetterAlias</h2><p>Met de <a href="http://dev.bukkit.org/bukkit-plugins/betteralias/" target="_blank" rel="external">BetterAlias</a> plugin kun je aliassen
+aanmaken zodat je met één woord een moeilijk commando kunt laten uitvoeren. Bijvoorbeeld handig
+als je spelers naar een wereld wilt laten tp’en met 1 commando.</p>
+<ol>
+<li>log in op de website</li>
+<li>Ga naar <code>Files</code> &gt; <code>FTP File Access</code></li>
+<li>Open de map <code>Plugins</code> &gt; <code>BetterAlias</code></li>
+<li>Voeg een alias toe aan het bestand <code>aliases.yml</code></li>
+</ol>
+<p>Hieronder zie je een paar voorbeelden. Als iemand wil pvp’en hoeft hij alleen nog maar het
+alias <code>/pvp</code> in te tikken, het commando <code>/mv tp topsy-vale</code> wordt dan automatisch voor hem
+uitgevoerd.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hub:&#10;    0: /mv tp hub&#10;&#10;creative:&#10;    0: /mv tp plotworld&#10;&#10;pvp:&#10;    0: /mv tp topsy-vale&#10;&#10;factions:&#10;    0: /mv tp factions1&#10;&#10;kingdom:&#10;    0: /mv tp kingdom1</span><br></pre></td></tr></table></figure>
+<h2 id="Per_World_Inventory">Per World Inventory</h2><p>De <a href="http://www.spigotmc.org/resources/per-world-inventory.4482/" target="_blank" rel="external">Per World Inventory</a> plugin
+maakt het mogelijk om voor iedere Multiverse wereld een aparte inventory te maken.</p>
+<p>Hiervoor moet de plugin wel vertellen welke werelden er allemaal op je server bestaan.</p>
+<ol>
+<li>log in op de website</li>
+<li>Ga naar <code>Files</code> &gt; <code>FTP File Access</code></li>
+<li>Open de map <code>Plugins</code> &gt; <code>PerWorldInventory</code></li>
+<li>Open het bestand <code>worlds.yml</code></li>
+</ol>
+<p>Maak groepen aan voor <strong>alle</strong> werelden op je server die een eigen inventory moeten hebben (of delen).</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groups:&#10;  default:&#10;    worlds:&#10;    - hub&#10;  kitbattle:&#10;    worlds:&#10;    - topsy-vale&#10;    - topsy-vale_nether&#10;    - topsy-vale_the_end&#10;  kingdom:&#10;    worlds:&#10;    - kingdom1&#10;  creative:&#10;    worlds:&#10;    - plotworld&#10;  factions:&#10;    worlds:&#10;    - factions1</span><br></pre></td></tr></table></figure>
+<h2 id="PlotMe">PlotMe</h2><p>Met de <a href="http://dev.bukkit.org/bukkit-plugins/plotme/" target="_blank" rel="external">PlotMe</a> plugin kun je eenvoudig een
+coole creative wereld maken met professionele plot features. <strong>Let op</strong>: de plugin zit niet
+in Spigot, je moet ‘m handmatig installeren.</p>
+<p>Eerst moet de wereld aangemaakt worden met dit Minecraft commando:</p>
+<p><code>/mv create plotworld normal -g PlotMe-DefaultGenerator</code></p>
+<p>De wereld is nu aangemaakt maar voordat normale spelers er gebruik van
+kunnen maken moet je ze eerst <code>plotme.use</code> rechten geven in PermissionsEx.</p>
+<ol>
+<li>log in op de website</li>
+<li>Ga naar <code>Files</code> &gt; <code>FTP File Access</code></li>
+<li>Open de map <code>Plugins</code> &gt; <code>PermissionsEx</code></li>
+<li>Open het bestand <code>permissions.yml</code></li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">groups:&#10;  default:&#10;    options:&#10;      default: true&#10;    permissions:&#10;    - modifyworld.*&#10;    - herochat.join.*&#10;    - herochat.speak.*&#10;    - herochat.leave.*&#10;    - plotme.use</span><br></pre></td></tr></table></figure>
+<p>Nu alleen nog je server reloaden en je spelers kunnen aan de slag met hun plots.</p>
+<p><strong>Let op:</strong> vergeet je nieuwe wereld niet toe te voegen aan het lijstje met <code>PerWorldInventory</code>
+werelden!</p>
+<h2 id="Coole_MOTD">Coole MOTD</h2><p>De Message Of The Day (MOTD) van je server is wat spelers zien in de lijst met servers als ze een
+potje online willen spelen. Standaard zie je daar een saaie grijze tekst maar die kun je pimpen door
+verschillende lettertypes (dik, dun, doorgestreept) s en een combinatie van kleuren te gebruiken.</p>
+<p>Hou er wel rekening mee dat het niet eenvoudig is om een coole MOTD te maken en dat je eerst zult
+moeten begrijpen hoe de codes voor kleuren en lettertypes werken. Maar als je dat eenmaal doorhebt
+maak je al snel de coolste MOTDs.</p>
+<h3 id="Kleurcodes">Kleurcodes</h3><p>Voor het voorbeeld dat straks komt hoef je alleen de vier kleuren te kennen die hieronder staan.
+Als je andere kleuren wilt gebruiken bezoek dan <a href="http://minecraft.gamepedia.com/Classic_server_protocol" target="_blank" rel="external">deze link</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Kleur</th>
+<th>code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rood</td>
+<td>\u00A7c</td>
+</tr>
+<tr>
+<td>geel</td>
+<td>\u00A7e</td>
+</tr>
+<tr>
+<td>roze</td>
+<td>\u00A7d</td>
+</tr>
+<tr>
+<td>donkergrijs</td>
+<td>\u00A78</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Lettertypes">Lettertypes</h3><p>Met deze lettertypes kun je nog meer variatie aanbrengen in je MOTD:</p>
+<table>
+<thead>
+<tr>
+<th>Lettertype</th>
+<th>code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dik</td>
+<td>\u00A7l</td>
+</tr>
+<tr>
+<td>doorgehaald</td>
+<td>\u00A7m</td>
+</tr>
+<tr>
+<td>reset</td>
+<td>\u00A7r</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Je_eigen_MOTD_maken">Je eigen MOTD maken</h3><p>Hieronder zie je een paar voorbeelden van een gepimpte MOTD. Als je goed kijkt zie je dat er
+codes voor de tekst staan, die code codes bepalen hoe de tekst wordt weergegeven.</p>
+<p><strong>Let op</strong> zorg er voor dat je altijd eerst de kleurcode gebruikt en dan pas de lettercode (anders
+snapt Minecraft het niet)</p>
+<p>Een voorbeeld van een MOTD met maar één regel:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\u00A7c\u00A7m------\u00A7r\u00A7c\u00A7l[\u00A7e\u00A7lMijnServer\u00A7c\u00A7l]\u00A7c\u00A7m------</span><br></pre></td></tr></table></figure>
+<p>Een voorbeeld van een MOTD met twee regels (de \n zorgt dat de rest op regel 2 terecht komt):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\u00A7c\u00A7m------\u00A7r\u00A7c\u00A7l[\u00A7e\u00A7lMijnServer\u00A7c\u00A7l]\u00A7c\u00A7m------\n\u00A7r\u00A78PVP | FACTIONS | KINGDOM | CREA | \u00A7d\u00A7lALTIJD GEZELLIG</span><br></pre></td></tr></table></figure>
+<h3 id="Je_MOTD_bijwerken">Je MOTD bijwerken</h3><p>Om je nieuwe MOTD zichtbaar te maken in de serverlijst:</p>
+<ol>
+<li>log in op de website</li>
+<li>Ga naar <code>Files</code> &gt;  <code>Config files</code></li>
+<li>Open <code>Server Settings</code></li>
+<li>Kopieer je eigen MOTD en plak deze in het veld naast <code>Server Message</code></li>
+<li>Druk op <code>Save</code> onderaan de pagina om op te slaan</li>
+<li>Reload je server om de nieuwe MOTD te activeren</li>
+</ol>
+<h1 id="Handige_links">Handige links</h1><ul>
+<li><a href="http://minecraft.gamepedia.com/Classic_server_protocol" target="_blank" rel="external">Klassieke Minecraft kleurcodes</a></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/minecraft/">Minecraft</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/dutch/">dutch</a>, <a href="/tags/minecraft/">minecraft</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="sponsor">
+  <h1 class="title">Support this blog</h1>
+
+  <div class="leaderboard">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- bravo-kernel-blog-leaderboard -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1161412231963156"
+         data-ad-slot="4755382371"
+         data-ad-format="auto">
+    </ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+</section>
+
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:bravo-kernel.com">
+  </form>
+</div>
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/api/" style="font-size: 16px;">api</a> <a href="/tags/apple/" style="font-size: 10px;">apple</a> <a href="/tags/cakephp/" style="font-size: 18px;">cakephp</a> <a href="/tags/cakephp3/" style="font-size: 16px;">cakephp3</a> <a href="/tags/chef/" style="font-size: 10px;">chef</a> <a href="/tags/chef-dk/" style="font-size: 10px;">chef-dk</a> <a href="/tags/cocktails/" style="font-size: 10px;">cocktails</a> <a href="/tags/composer/" style="font-size: 12px;">composer</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/debian/" style="font-size: 20px;">debian</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/dutch/" style="font-size: 10px;">dutch</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/fim/" style="font-size: 10px;">fim</a> <a href="/tags/foc/" style="font-size: 10px;">foc</a> <a href="/tags/git/" style="font-size: 20px;">git</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/ipad/" style="font-size: 10px;">ipad</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jwt/" style="font-size: 10px;">jwt</a> <a href="/tags/kitchen/" style="font-size: 10px;">kitchen</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/microsoft/" style="font-size: 14px;">microsoft</a> <a href="/tags/minecraft/" style="font-size: 12px;">minecraft</a> <a href="/tags/misc/" style="font-size: 12px;">misc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/mssql/" style="font-size: 10px;">mssql</a> <a href="/tags/nginx/" style="font-size: 12px;">nginx</a> <a href="/tags/octopress/" style="font-size: 16px;">octopress</a> <a href="/tags/octostrap3/" style="font-size: 12px;">octostrap3</a> <a href="/tags/office/" style="font-size: 10px;">office</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/phpcs/" style="font-size: 10px;">phpcs</a> <a href="/tags/rest/" style="font-size: 16px;">rest</a> <a href="/tags/security/" style="font-size: 12px;">security</a> <a href="/tags/server-2012/" style="font-size: 10px;">server-2012</a> <a href="/tags/shellshock/" style="font-size: 10px;">shellshock</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/ubuntu/" style="font-size: 12px;">ubuntu</a> <a href="/tags/vagrant/" style="font-size: 10px;">vagrant</a> <a href="/tags/validator/" style="font-size: 10px;">validator</a> <a href="/tags/wheezy/" style="font-size: 16px;">wheezy</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a>
+  </div>
+</div>
+
+
+  <div class="advertisement">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- bravo-kernel-blog-270 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:270px;height:270px"
+		 data-ad-client="ca-pub-1161412231963156"
+		 data-ad-slot="9643145573"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 bravo-kernel
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'bravo-kernel';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

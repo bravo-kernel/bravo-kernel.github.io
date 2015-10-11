@@ -1,0 +1,52 @@
+article header .updated:before {
+  content: '\f044';
+}
+.updated:before {
+  color: #f90;
+  font-size: 1.1em;
+  font-family: FontAwesome;
+  padding-left: 1em;
+}
+.updated span {
+  color: #f90;
+  font-size: 0.9em;
+  padding-left: 0.3em;
+  font-family: Lato, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+.title {
+  padding-top: 1em;
+}
+.github-improve {
+  float: right;
+}
+.github-improve:before {
+  content: '\f09b';
+}
+.github-improve:before {
+  color: #258fb8;
+  font-size: 1.4em;
+  font-family: FontAwesome;
+}
+.github-improve a {
+  font-size: 1em;
+  padding-left: 0.3em;
+  font-family: Lato, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+time {
+  display: inline !important;
+}
+#sponsor {
+  padding: 20px;
+  padding-bottom: 30px;
+  background: #fff;
+  -webkit-box-shadow: 1px 2px 3px #ddd;
+  box-shadow: 1px 2px 3px #ddd;
+  margin-top: -25px;
+  margin-bottom: 25px;
+}
+#sponsor .title {
+  font-weight: normal;
+  padding-top: 0;
+  padding-bottom: 15px;
+  color: #f90;
+}

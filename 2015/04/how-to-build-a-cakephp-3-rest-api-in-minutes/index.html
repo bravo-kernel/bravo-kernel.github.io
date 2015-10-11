@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>How to build a CakePHP 3 REST API in minutes | Bravo Kernel</title>
+  <meta name="author" content="bravo-kernel">
+  
+  <meta name="description" content="Step-by-step instructions for creating a full featured RESTful API using CakePHP 3.
+Before We BeginThis is part one of the CakePHP 3 REST API tutorial">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="How to build a CakePHP 3 REST API in minutes"/>
+  <meta property="og:site_name" content="Bravo Kernel"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Bravo Kernel" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40048049-1']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Bravo Kernel</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">Feed</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-04-12T09:22:21.000Z"><a href="/2015/04/how-to-build-a-cakephp-3-rest-api-in-minutes/">Apr 12 2015</a></time>
+		
+			<span class="updated" title="Post Updated"><span>Oct 11 2015</span></span>
+        
+		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-04-12-how-to-build-a-cakephp-3-rest-api-in-minutes.md">Improve on Github</a></div>
+      
+      
+  
+    <h1 class="title">How to build a CakePHP 3 REST API in minutes</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Step-by-step instructions for creating a full featured RESTful API using CakePHP 3.</p>
+<h2 id="Before_We_Begin">Before We Begin</h2><p>This is part one of the CakePHP 3 REST API tutorial series:</p>
+<ol>
+<li>How to build a CakePHP 3 REST API in minutes</li>
+<li><a href="/2015/04/how-to-use-a-cakephp-3-rest-api/">How to use a CakePHP 3 REST API</a></li>
+<li><a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">How to prefix route a CakePHP 3 REST API</a></li>
+<li><a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a></li>
+</ol>
+<h2 id="1-_Create_The_Application">1. Create The Application</h2><p>For this tutorial (and the follow-up posts) we will create a fresh CakePHP 3
+application for our API:</p>
+<ul>
+<li>named <code>cake3api.app</code></li>
+<li>connected to a database named <code>cake3api_app</code></li>
+<li>exposed using virtualhost <code>http://cake3api.app</code></li>
+</ul>
+<p>If you need help with the installation either:</p>
+<ul>
+<li>follow the detailed installation instructions of
+<a href="http://book.cakephp.org/3.0/en/tutorials-and-examples/blog/blog.html#blog-tutorial" target="_blank" rel="external">the CakePHP Blog Tutorial</a></li>
+<li>install <a href="https://github.com/alt3/cakebox" target="_blank" rel="external">cakebox</a> and run
+<code>cakebox application add cake3api.app</code> to set up the application, database
+and virtual host</li>
+</ul>
+<h2 id="2-_Add_the_CRUD_plugin">2. Add the CRUD plugin</h2><p>Add the <a href="https://github.com/FriendsOfCake/crud" target="_blank" rel="external">CRUD plugin</a> to your
+application so your API will benefit of additional functionality like
+pagination, thin controllers and DRY best practices.</p>
+<p>Run the following command inside your application’s root directory to
+composer install the plugin:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require friendsofcake/crud:~<span class="number">4.0</span></span><br></pre></td></tr></table></figure>
+<p>Now run the following command to make your application use the plugin:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/cake plugin load Crud</span><br></pre></td></tr></table></figure>
+<h2 id="3-_Enable_the_API">3. Enable the API</h2><h3 id="a)_Expose_one_or_more_controllers">a) Expose one or more controllers</h3><p>Only controllers <strong>explicitly enabled</strong> for API use will be accessible
+through your API.</p>
+<p>To prepare for the follow-up tutorial we will enable the <code>CocktailsController</code> by using the
+<code>resources()</code> method inside the / scope definition of your <code>config/routes.php</code> file like this:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Router::scope(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$routes</span>)</span> </span>&#123;</span><br><span class="line">	<span class="variable">$routes</span>-&gt;resources(<span class="string">'Cocktails'</span>);</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="b)_Configure_the_API">b) Configure the API</h3><p>Make the default API configuration available to all controllers in your
+application by replacing the content of your <code>src/Controller/AppController.php</code>
+file with:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Controller</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Cake</span>\<span class="title">Controller</span>\<span class="title">Controller</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">use</span> \<span class="title">Crud</span>\<span class="title">Controller</span>\<span class="title">ControllerTrait</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$components</span> = [</span><br><span class="line">        <span class="string">'RequestHandler'</span>,</span><br><span class="line">        <span class="string">'Crud.Crud'</span> =&gt; [</span><br><span class="line">            <span class="string">'actions'</span> =&gt; [</span><br><span class="line">                <span class="string">'Crud.Index'</span>,</span><br><span class="line">                <span class="string">'Crud.View'</span>,</span><br><span class="line">                <span class="string">'Crud.Add'</span>,</span><br><span class="line">                <span class="string">'Crud.Edit'</span>,</span><br><span class="line">                <span class="string">'Crud.Delete'</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="string">'listeners'</span> =&gt; [</span><br><span class="line">                <span class="string">'Crud.Api'</span>,</span><br><span class="line">                <span class="string">'Crud.ApiPagination'</span>,</span><br><span class="line">                <span class="string">'Crud.ApiQueryLog'</span></span><br><span class="line">            ]</span><br><span class="line">        ]</span><br><span class="line">    ];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="c)_Optionally_enable_extensions">c) Optionally enable extensions</h3><p>Exposing your API resources <strong>requires no additional configuration</strong>, they are
+already fully accessible using Request Headers.</p>
+<p>However… we will assume you want to additionally allow access to your API resources using
+the <a href="http://book.cakephp.org/3.0/en/development/routing.html#routing-file-extensions" target="_blank" rel="external">.json and .xml extensions</a>
+so open your <code>config/routes.php</code> file and add the following line directly above
+the / scope definition:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Router::extensions([<span class="string">'json'</span>, <span class="string">'xml'</span>]);</span><br></pre></td></tr></table></figure>
+<h2 id="Stop_The_Clock!">Stop The Clock!</h2><p>That’s all, you should now be able to browse to <code>http://cake3api.app/index.json</code>
+and be presented with your API’s first JSON (error) response looking like this:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "<span class="attribute">message</span>": <span class="value"><span class="string">"Controller class Index could not be found."</span></span>,</span><br><span class="line">    "<span class="attribute">url</span>": <span class="value"><span class="string">"\/index.json"</span></span>,</span><br><span class="line">    "<span class="attribute">code</span>": <span class="value"><span class="number">404</span></span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure>
+<p>Quite impressive but in all fairness… even though you now have a (very) cool
+API that only took minutes to create it is still pretty useless without any
+meaningful data to serve so this might be a good moment to dive straight into
+the follow-up tutorial:</p>
+<blockquote>
+<p><a href="/2015/04/how-to-use-a-cakephp-3-rest-api/">How to use a CakePHP3 REST API</a></p>
+</blockquote>
+<h2 id="Additional_reading">Additional reading</h2><ul>
+<li>Follow-up tutorial “<a href="/2015/04/how-to-use-a-cakephp-3-rest-api/">How to use a CakePHP3 REST API</a>“</li>
+<li><a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-build-a-cakephp3-rest-api" target="_blank" rel="external">End-state application sources</a> for this tutorial</li>
+<li><a href="http://crud.readthedocs.org" target="_blank" rel="external">FriendsOfCake CRUD plugin documentation</a></li>
+<li>The <a href="http://book.cakephp.org/3.0/en/index.html" target="_blank" rel="external">CakePHP 3 Book</a> and <a href="http://api.cakephp.org/3.0/" target="_blank" rel="external">CakePHP 3 API</a> documentation</li>
+</ul>
+<p><em>Hat tip to CakePHP Core Developers <a href="https://github.com/lorenzo" target="_blank" rel="external">jose_zap</a>
+and <a href="https://github.com/admad" target="_blank" rel="external">ADmad</a> for helping create this post.</em></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/cakephp/">CakePHP</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/api/">api</a>, <a href="/tags/cakephp/">cakephp</a>, <a href="/tags/cakephp3/">cakephp3</a>, <a href="/tags/rest/">rest</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="sponsor">
+  <h1 class="title">Support this blog</h1>
+
+  <div class="leaderboard">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- bravo-kernel-blog-leaderboard -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1161412231963156"
+         data-ad-slot="4755382371"
+         data-ad-format="auto">
+    </ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+</section>
+
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:bravo-kernel.com">
+  </form>
+</div>
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/api/" style="font-size: 16px;">api</a> <a href="/tags/apple/" style="font-size: 10px;">apple</a> <a href="/tags/cakephp/" style="font-size: 18px;">cakephp</a> <a href="/tags/cakephp3/" style="font-size: 16px;">cakephp3</a> <a href="/tags/chef/" style="font-size: 10px;">chef</a> <a href="/tags/chef-dk/" style="font-size: 10px;">chef-dk</a> <a href="/tags/cocktails/" style="font-size: 10px;">cocktails</a> <a href="/tags/composer/" style="font-size: 12px;">composer</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/debian/" style="font-size: 20px;">debian</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/dutch/" style="font-size: 10px;">dutch</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/fim/" style="font-size: 10px;">fim</a> <a href="/tags/foc/" style="font-size: 10px;">foc</a> <a href="/tags/git/" style="font-size: 20px;">git</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/ipad/" style="font-size: 10px;">ipad</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jwt/" style="font-size: 10px;">jwt</a> <a href="/tags/kitchen/" style="font-size: 10px;">kitchen</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/microsoft/" style="font-size: 14px;">microsoft</a> <a href="/tags/minecraft/" style="font-size: 12px;">minecraft</a> <a href="/tags/misc/" style="font-size: 12px;">misc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/mssql/" style="font-size: 10px;">mssql</a> <a href="/tags/nginx/" style="font-size: 12px;">nginx</a> <a href="/tags/octopress/" style="font-size: 16px;">octopress</a> <a href="/tags/octostrap3/" style="font-size: 12px;">octostrap3</a> <a href="/tags/office/" style="font-size: 10px;">office</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/phpcs/" style="font-size: 10px;">phpcs</a> <a href="/tags/rest/" style="font-size: 16px;">rest</a> <a href="/tags/security/" style="font-size: 12px;">security</a> <a href="/tags/server-2012/" style="font-size: 10px;">server-2012</a> <a href="/tags/shellshock/" style="font-size: 10px;">shellshock</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/ubuntu/" style="font-size: 12px;">ubuntu</a> <a href="/tags/vagrant/" style="font-size: 10px;">vagrant</a> <a href="/tags/validator/" style="font-size: 10px;">validator</a> <a href="/tags/wheezy/" style="font-size: 16px;">wheezy</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a>
+  </div>
+</div>
+
+
+  <div class="advertisement">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- bravo-kernel-blog-270 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:270px;height:270px"
+		 data-ad-client="ca-pub-1161412231963156"
+		 data-ad-slot="9643145573"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 bravo-kernel
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'bravo-kernel';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>How to create Scheduled Tasks for Powershell on Windows Server 2012 | Bravo Kernel</title>
+  <meta name="author" content="bravo-kernel">
+  
+  <meta name="description" content="Properly configured Scheduled Tasks for Powershell scripts on Windows Server 2012.
+Creating the service accountAssuming the account only requires loca">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="How to create Scheduled Tasks for Powershell on Windows Server 2012"/>
+  <meta property="og:site_name" content="Bravo Kernel"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Bravo Kernel" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40048049-1']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Bravo Kernel</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">Feed</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-09-21T16:45:43.000Z"><a href="/2015/09/how-to-create-scheduled-tasks-for-powershell-on-windows-server-2012/">Sep 21 2015</a></time>
+		
+			<span class="updated" title="Post Updated"><span>Oct 11 2015</span></span>
+        
+		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-09-21-how-to-create-scheduled-tasks-for-powershell-on-windows-server-2012.md">Improve on Github</a></div>
+      
+      
+  
+    <h1 class="title">How to create Scheduled Tasks for Powershell on Windows Server 2012</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Properly configured Scheduled Tasks for Powershell scripts on Windows Server 2012.</p>
+<h2 id="Creating_the_service_account">Creating the service account</h2><p>Assuming the account only requires local administrator permissions:</p>
+<ul>
+<li>open the Local Users and Groups console (<code>lusrmgr.msc</code>)</li>
+<li>create a new local user (service) account used to execute the scheduled task</li>
+<li>add the service account to the local Administrators group</li>
+<li>open the Local Security console (<code>gepdit.msc</code>) and expand:<ul>
+<li>Local Computer Policy</li>
+<li>Windows Settings</li>
+<li>Security Settings</li>
+<li>Local Policies</li>
+<li>User Rights Assignment</li>
+</ul>
+</li>
+<li>open the <code>Log on as a service</code> policy and make sure to add the service account</li>
+</ul>
+<h2 id="Creating_the_Scheduled_Task">Creating the Scheduled Task</h2><p>Open the Task Scheduler console (<code>taskschd.msc</code>) and create a new task.</p>
+<h3 id="General_tab">General tab</h3><ul>
+<li>use a meaningful name</li>
+<li>specify your service account using the <code>Change User or Group</code> button</li>
+<li>select <code>Run whether user user is logged in or not</code></li>
+<li>select the <code>hidden</code> option</li>
+<li>set the <code>Configure for</code> option to Windows Server 2012</li>
+</ul>
+<h3 id="Triggers_tab">Triggers tab</h3><p>Create two triggers:</p>
+<ul>
+<li>one using begin <code>At startup</code> so the scheduled task will survive reboots</li>
+<li>one using begin <code>At task creation/modification</code> so it will run from the
+moment the task is created</li>
+</ul>
+<p>Make sure both triggers share the same configuration:</p>
+<ul>
+<li>select <code>Repeat task at every</code> and set to e.g. 30 minutes</li>
+<li>change the duration to <code>Indefinitely</code></li>
+<li>be proactive; stop the task if it runs longer than <code>1 hour</code></li>
+<li>select the <code>Enabled</code> checkbox</li>
+</ul>
+<h3 id="Actions_tab">Actions tab</h3><p>Create a new action:</p>
+<ul>
+<li>select <code>Start a program</code></li>
+<li>set the <code>Program/script</code> field to (just) <code>Powershell</code></li>
+<li>set the <code>Arguments</code> field to <code>-noprofile -executionpolicy bypass -file &quot;c:\your-script.ps1&quot;</code></li>
+<li>even though this is optional it would be wise to fill the <code>Start in (optional)</code>
+field with the full path of the directory your script is located in</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> do NOT use the <code>-noexit</code> argument as this will keep your task running
+indefinitely, preventing it to reach <code>Ready</code> state after completion.</p>
+</blockquote>
+<h3 id="Conditions_tab">Conditions tab</h3><p>Nothing to do here</p>
+<h3 id="Settings_tab">Settings tab</h3><p>Make sure to set the bottom most dropdown to <code>Stop the existing instance</code>.</p>
+<h2 id="Round_up">Round up</h2><p>On saving the task it will:</p>
+<ul>
+<li>start immediately (status <code>Running</code>)</li>
+<li>change to status <code>Queued</code> after it has completed</li>
+<li>will be executed again every other 30 minutes</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/microsoft/">Microsoft</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/microsoft/">microsoft</a>, <a href="/tags/server-2012/">server-2012</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="sponsor">
+  <h1 class="title">Support this blog</h1>
+
+  <div class="leaderboard">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- bravo-kernel-blog-leaderboard -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1161412231963156"
+         data-ad-slot="4755382371"
+         data-ad-format="auto">
+    </ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+</section>
+
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:bravo-kernel.com">
+  </form>
+</div>
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/api/" style="font-size: 16px;">api</a> <a href="/tags/apple/" style="font-size: 10px;">apple</a> <a href="/tags/cakephp/" style="font-size: 18px;">cakephp</a> <a href="/tags/cakephp3/" style="font-size: 16px;">cakephp3</a> <a href="/tags/chef/" style="font-size: 10px;">chef</a> <a href="/tags/chef-dk/" style="font-size: 10px;">chef-dk</a> <a href="/tags/cocktails/" style="font-size: 10px;">cocktails</a> <a href="/tags/composer/" style="font-size: 12px;">composer</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/debian/" style="font-size: 20px;">debian</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/dutch/" style="font-size: 10px;">dutch</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/fim/" style="font-size: 10px;">fim</a> <a href="/tags/foc/" style="font-size: 10px;">foc</a> <a href="/tags/git/" style="font-size: 20px;">git</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/ipad/" style="font-size: 10px;">ipad</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jwt/" style="font-size: 10px;">jwt</a> <a href="/tags/kitchen/" style="font-size: 10px;">kitchen</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/microsoft/" style="font-size: 14px;">microsoft</a> <a href="/tags/minecraft/" style="font-size: 12px;">minecraft</a> <a href="/tags/misc/" style="font-size: 12px;">misc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/mssql/" style="font-size: 10px;">mssql</a> <a href="/tags/nginx/" style="font-size: 12px;">nginx</a> <a href="/tags/octopress/" style="font-size: 16px;">octopress</a> <a href="/tags/octostrap3/" style="font-size: 12px;">octostrap3</a> <a href="/tags/office/" style="font-size: 10px;">office</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/phpcs/" style="font-size: 10px;">phpcs</a> <a href="/tags/rest/" style="font-size: 16px;">rest</a> <a href="/tags/security/" style="font-size: 12px;">security</a> <a href="/tags/server-2012/" style="font-size: 10px;">server-2012</a> <a href="/tags/shellshock/" style="font-size: 10px;">shellshock</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/ubuntu/" style="font-size: 12px;">ubuntu</a> <a href="/tags/vagrant/" style="font-size: 10px;">vagrant</a> <a href="/tags/validator/" style="font-size: 10px;">validator</a> <a href="/tags/wheezy/" style="font-size: 16px;">wheezy</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a>
+  </div>
+</div>
+
+
+  <div class="advertisement">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- bravo-kernel-blog-270 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:270px;height:270px"
+		 data-ad-client="ca-pub-1161412231963156"
+		 data-ad-slot="9643145573"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2015 bravo-kernel
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'bravo-kernel';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
