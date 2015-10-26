@@ -3,18 +3,13 @@
 <head>
   <meta charset="utf-8">
   
-  <title>How to stop mpt raid status change emails on Debian 6/VPS | Bravo Kernel</title>
+  <title>Page 2 | Archive: 2015 | Bravo Kernel</title>
   <meta name="author" content="bravo-kernel">
-  
-  <meta name="description" content="I was getting flooded with error emails on my Debian 6 server running on a hosted VPS:
-Subject: info: mpt raid status change on dev01
-
-This is a RAID ">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="How to stop mpt raid status change emails on Debian 6/VPS"/>
+  
   <meta property="og:site_name" content="Bravo Kernel"/>
 
   
@@ -62,89 +57,58 @@ This is a RAID ">
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2015</h2>
+
+
   
+    <article class="post">
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-04-26T11:47:32.000Z"><a href="/2013/04/how-to-stop-mpt-raid-status-change-emails-on-debian-6-slash-vps/">Apr 26 2013</a></time>
+		<time datetime="2015-03-27T18:30:00.000Z"><a href="/2015/03/creating-proper-github-releases/" title="Post Created">Mar 27 2015</a></time>
 		
 			<span class="updated" title="Post Updated"><span>Oct 11 2015</span></span>
         
-		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2013-04-26-how-to-stop-mpt-raid-status-change-emails-on-debian-6-slash-vps.md">Improve on Github</a></div>
       
       
   
-    <h1 class="title">How to stop mpt raid status change emails on Debian 6/VPS</h1>
+    <h1 class="title"><a href="/2015/03/creating-proper-github-releases/">Creating proper Github releases</a></h1>
   
 
     </header>
-    <div class="entry">
-      
-        <p>I was getting flooded with error emails on my Debian 6 server running on a hosted VPS:</p>
-<pre><code><span class="attribute">Subject</span>: <span class="string">info: mpt raid status change on dev01</span>
-
-<span class="pf">This is a RAID status update <span class="keyword">from</span> mpt-statusd.  The mpt-status program reports that one of the RAIDs changed <span class="keyword">state</span>:</span>
-</code></pre><p>Since I’m not using RAID… running this as root will stop the emails:</p>
-<pre><code><span class="preprocessor"># /etc/init.d/mpt-statusd stop</span>
- # echo <span class="type">RUNDAEMON</span>=no &gt; /etc/<span class="default"><span class="keyword">default</span>/mpt-statusd</span>
-</code></pre><p>As an alternative to step 2: use package rcconf  to deactivate this service on startup in all runlevel.</p>
-
-      
-    </div>
     <footer>
-      
+		
         
   
   <div class="categories">
-    <a href="/categories/linux/">Linux</a>
+    <a href="/categories/git/">Git</a>
   </div>
 
         
   
   <div class="tags">
-    <a href="/tags/debian/">debian</a>
+    <a href="/tags/git/">git</a>, <a href="/tags/github/">github</a>
   </div>
 
         
-      
-      <div class="clearfix"></div>
+		<div class="clearfix"></div>
     </footer>
   </div>
 </article>
 
-<section id="sponsor">
-  <h1 class="title">Support this blog</h1>
 
-  <div class="leaderboard">
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- bravo-kernel-blog-leaderboard -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-1161412231963156"
-         data-ad-slot="4755382371"
-         data-ad-format="auto">
-    </ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-
-</section>
-
-
-
-<section id="comment">
-  <h1 class="title">Comments</h1>
 
   
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-  
-</section>
 
+  <nav id="pagination">
+  
+    <a href="/archives/2015/" class="alignleft prev">Previous</a>
+  
+  
+  <div class="clearfix"></div>
+</nav>
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
@@ -196,7 +160,7 @@ var disqus_shortname = 'bravo-kernel';
   var dsq = document.createElement('script');
   dsq.type = 'text/javascript';
   dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 }());
 </script>
