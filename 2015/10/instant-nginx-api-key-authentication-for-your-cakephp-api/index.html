@@ -71,7 +71,7 @@ no need for 3r">
         <div class="icon"></div>
         <time datetime="2015-10-26T19:50:30.000Z"><a href="/2015/10/instant-nginx-api-key-authentication-for-your-cakephp-api/">Oct 26 2015</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Oct 26 2015</span></span>
+			<span class="updated" title="Post Updated"><span>Oct 27 2015</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-10-26-instant-nginx-api-key-authentication-for-your-cakephp-api.md">Improve on Github</a></div>
       
@@ -91,15 +91,15 @@ nothing more than a simple Nginx configuration file:</p>
 <li>no code, no overhead</li>
 <li>manual API key revocation</li>
 <li>manual API key updating</li>
-<li>json responses consistent with the <a href="http://crud.readthedocs.org/en/latest/listeners/api.html#id1" target="_blank" rel="external">FriendsOfCake API Listener</a></li>
+<li>json response consistent with the <a href="http://crud.readthedocs.org/en/latest/listeners/api.html#id1" target="_blank" rel="external">FriendsOfCake API Listener</a></li>
 </ul>
 <h2 id="1-_Creating_the_nginx_conf_file">1. Creating the nginx conf file</h2><p>Create new file <code>/etc/nginx/api_keys.conf</code> with the following content:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># bravo-kernel's key</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$http_apikey</span> = <span class="string">'abcdefg123456'</span>) &#123;</span><br><span class="line">    <span class="built_in">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># mikey's key</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$http_apikey</span> = <span class="string">'1234567890'</span>) &#123;</span><br><span class="line">    <span class="built_in">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">default_<span class="built_in">type</span> application/json;</span><br><span class="line"><span class="built_in">return</span> <span class="number">403</span> <span class="string">'&#123;"success": false, "data":&#123;"message":"Invalid API Key", "url": "$request_uri", "code":403&#125;&#125;'</span>;</span><br></pre></td></tr></table></figure>
 <p>The above will:</p>
 <ul>
 <li>will check all connections for the presence of an <code>apikey</code> header</li>
-<li>if an apikey is found with a matching value no further action is taken</li>
-<li>if no match was made a 403 is thrown with json response body identical to
+<li>do nothing if a matching apikey is found</li>
+<li>will otherwise throw a 403 with json response body identical to
 the <a href="http://crud.readthedocs.org/en/latest/listeners/api.html#id1" target="_blank" rel="external">FoC API Listener</a></li>
 </ul>
 <blockquote>
