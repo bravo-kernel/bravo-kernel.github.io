@@ -10,7 +10,7 @@
 (CRUD) API using
 nothing more than a simple Nginx configuration file:
 
-no need for 3r">
+protect your A">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -71,7 +71,7 @@ no need for 3r">
         <div class="icon"></div>
         <time datetime="2015-10-26T19:50:30.000Z"><a href="/2015/10/instant-nginx-api-key-authentication-for-your-cakephp-api/">Oct 26 2015</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Oct 27 2015</span></span>
+			<span class="updated" title="Post Updated"><span>Nov 6 2015</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-10-26-instant-nginx-api-key-authentication-for-your-cakephp-api.md">Improve on Github</a></div>
       
@@ -87,14 +87,14 @@ no need for 3r">
 (<a href="https://github.com/FriendsOfCake/crud" target="_blank" rel="external">CRUD</a>) API using
 nothing more than a simple Nginx configuration file:</p>
 <ul>
-<li>no need for 3rd party gateways</li>
+<li>protect your API before even coding</li>
 <li>no code, no overhead</li>
-<li>manual API key revocation</li>
-<li>manual API key updating</li>
 <li>json response consistent with the <a href="http://crud.readthedocs.org/en/latest/listeners/api.html#id1" target="_blank" rel="external">FriendsOfCake API Listener</a></li>
+<li>manual API key updating and revocation</li>
+<li>replace with a “proper” solution when you’re ready</li>
 </ul>
 <h2 id="1-_Creating_the_nginx_conf_file">1. Creating the nginx conf file</h2><p>Create new file <code>/etc/nginx/api_keys.conf</code> with the following content:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># bravo-kernel's key</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$http_apikey</span> = <span class="string">'abcdefg123456'</span>) &#123;</span><br><span class="line">    <span class="built_in">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># mikey's key</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$http_apikey</span> = <span class="string">'1234567890'</span>) &#123;</span><br><span class="line">    <span class="built_in">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">default_<span class="built_in">type</span> application/json;</span><br><span class="line"><span class="built_in">return</span> <span class="number">403</span> <span class="string">'&#123;"success": false, "data":&#123;"message":"Invalid API Key", "url": "$request_uri", "code":403&#125;&#125;'</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># define boolean</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$valid</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># bravo-kernel's key</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$http_apikey</span> = <span class="string">'abcdefg123456'</span>) &#123;</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$valid</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># mikey's key</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$http_apikey</span> = <span class="string">'1234567890'</span>) &#123;</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$valid</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># throw 403 if no key match was made</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$valid</span> = <span class="number">0</span>) &#123;</span><br><span class="line">    add_header <span class="string">'Content-Type'</span> <span class="string">'application/json;charset=UTF-8'</span> always;</span><br><span class="line">    <span class="built_in">return</span> <span class="number">403</span> <span class="string">'&#123;"success": false, "data":&#123;"message":"Invalid API Key", "url": "$request_uri", "code":403&#125;&#125;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>The above will:</p>
 <ul>
 <li>will check all connections for the presence of an <code>apikey</code> header</li>
@@ -124,9 +124,13 @@ will remove them by default</a>.</p>
 </li>
 <li><p>Try to access one of your API resources</p>
 </li>
-<li><p>You should see a json error response (403) similar to the one below proving
-your API resources can no longer be accessed without a valid API key:</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;  &#34;success&#34;: false,&#10;  &#34;data&#34;: &#123;&#10;    &#34;message&#34;: &#34;Invalid API Key&#34;,&#10;    &#34;url&#34;: &#34;/cocktails&#34;,&#10;    &#34;code&#34;: 403&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<li><p>You should see a json (403) error response similar to the one below proving:</p>
+<ul>
+<li>your API resources are no longer accessible without a valid API key</li>
+<li><p>Nginx is serving json similar to the CRUD plugin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;  &#34;success&#34;: false,&#10;  &#34;data&#34;: &#123;&#10;    &#34;message&#34;: &#34;Invalid API Key&#34;,&#10;    &#34;url&#34;: &#34;/cocktails&#34;,&#10;    &#34;code&#34;: 403&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 </li>
 <li><p>Now add a custom header named <code>apikey</code> and value <code>1234567890</code></p>
 </li>
