@@ -71,7 +71,7 @@ protect your A">
         <div class="icon"></div>
         <time datetime="2015-10-26T19:50:30.000Z"><a href="/2015/10/instant-nginx-api-key-authentication-for-your-cakephp-api/">Oct 26 2015</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Nov 6 2015</span></span>
+			<span class="updated" title="Post Updated"><span>Nov 7 2015</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-10-26-instant-nginx-api-key-authentication-for-your-cakephp-api.md">Improve on Github</a></div>
       
@@ -110,10 +110,10 @@ will remove them by default</a>.</p>
 <ol>
 <li><p>Open your nginx vhost file</p>
 </li>
-<li><p>Add the following line directly below the <code>~ \.php</code> location</p>
+<li><p>To protect all files (php, html, etc) add the following line directly below the <code>/</code> location</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include /etc/nginx/api_keys.conf;</span><br></pre></td></tr></table></figure>
 <p> So your configuration will look similar to:</p>
- <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">location</span> <span class="regexp">~ \.php$</span> &#123;</span><br><span class="line">    <span class="title">include</span> /etc/nginx/api_keys.conf;        </span><br><span class="line">    <span class="title">try_files</span> <span class="variable">$uri</span> =<span class="number">404</span>;</span><br><span class="line">    <span class="title">include</span> /etc/nginx/fastcgi_params;</span><br><span class="line">    <span class="title">fastcgi_pass</span>    <span class="url">unix:/var/run/php5-fpm.sock</span>;</span><br><span class="line">    <span class="title">fastcgi_index</span>   index.php;</span><br><span class="line">    <span class="title">fastcgi_param</span> SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">location</span> / &#123;</span><br><span class="line">    <span class="title">include</span> /etc/nginx/api_keys.conf;        </span><br><span class="line">    <span class="title">try_files</span> <span class="variable">$uri</span> \<span class="variable">$uri</span> /index.php?<span class="variable">$args</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Restart nginx to effectuate the changes:</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service nginx restart</span><br></pre></td></tr></table></figure>
