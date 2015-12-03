@@ -70,7 +70,7 @@ $ curl -sS https://getcomposer.org/installer | sud">
         <div class="icon"></div>
         <time datetime="2014-08-10T07:27:48.000Z"><a href="/2014/08/how-to-install-composer-on-debian/">Aug 10 2014</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Oct 11 2015</span></span>
+			<span class="updated" title="Post Updated"><span>Dec 3 2015</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2014-08-10-how-to-install-composer-on-debian.md">Improve on Github</a></div>
       
@@ -85,8 +85,7 @@ $ curl -sS https://getcomposer.org/installer | sud">
         <p>To make Composer (globally) available on Debian:</p>
 <pre><code><span class="variable">$ </span>cd /usr/src
 <span class="variable">$ </span>sudo apt-get install curl php5-cli
-<span class="variable">$ </span>curl -sS <span class="symbol">https:</span>/<span class="regexp">/getcomposer.org/installer</span> | sudo php
-<span class="variable">$ </span>sudo mv composer.phar /usr/bin/composer
+<span class="variable">$ </span>curl -sS <span class="symbol">https:</span>/<span class="regexp">/getcomposer.org/installer</span> | sudo php -- --install-dir=<span class="regexp">/usr/local</span><span class="regexp">/bin --filename=composer</span>
 </code></pre><p>Verify installation:</p>
 <pre><code>$ composer --version
 Composer version <span class="number">4</span>ecdbf89c4a3d1e5dfe73c57e3202a5e2a18c87e <span class="number">2014</span>-<span class="number">07</span>-<span class="number">28</span> <span class="number">20</span>:<span class="number">12</span>:<span class="number">27</span>
