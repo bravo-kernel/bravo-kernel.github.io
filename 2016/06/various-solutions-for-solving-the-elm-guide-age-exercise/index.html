@@ -1,0 +1,327 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Various solutions for solving the Elm Guide age exercise | Bravo Kernel</title>
+  <meta name="author" content="bravo-kernel">
+  
+  <meta name="description" content="Step-by-step walkthrough of various solutions to the
+Elm Guide age challenge
+intended to help novice Elm users grasp types, type conversions and refac">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Various solutions for solving the Elm Guide age exercise"/>
+  <meta property="og:site_name" content="Bravo Kernel"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Bravo Kernel" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40048049-1']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Bravo Kernel</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">Feed</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-06-18T20:06:53.000Z"><a href="/2016/06/various-solutions-for-solving-the-elm-guide-age-exercise/">Jun 18 2016</a></time>
+		
+			<span class="updated" title="Post Updated"><span>Jun 18 2016</span></span>
+        
+		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2016-06-18-various-solutions-for-solving-the-elm-guide-age-exercise.md">Improve on Github</a></div>
+      
+      
+  
+    <h1 class="title">Various solutions for solving the Elm Guide age exercise</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Step-by-step walkthrough of various solutions to the
+<a href="http://guide.elm-lang.org/architecture/user_input/forms.html" target="_blank" rel="external">Elm Guide age challenge</a>
+intended to help novice Elm users grasp types, type conversions and refactoring logic.</p>
+<h2 id="Before_We_Begin">Before We Begin</h2><p>Please note that:</p>
+<ul>
+<li>all provided code can be tested online by copy-pasting into the <a href="http://elm-lang.org/try" target="_blank" rel="external">online Elm Try editor</a></li>
+<li>this tutorial is aimed at new users with little to no prior knowledge of the <a href="http://elm-lang.org/" target="_blank" rel="external">Elm</a> 
+functional programming language</li>
+<li>we assume users have read all information in the Guide up to and including the Forms page</li>
+<li>we will follow the natural learning curve of novice users in four steps (from most simple to more complex)</li>
+</ul>
+<h2 id="The_challenge">The challenge</h2><p>The Elm Guide contains various cleverly placed “exercises” challenging the user
+to dig in and solve seemingly simple problems. The one we are addressing is:</p>
+<blockquote>
+<p>Add an additional field for age and check that it is a number.</p>
+</blockquote>
+<p>We are picking up where the code example in the Guide stops so make sure to
+at least understand that code or, even better, drop
+<a href="https://github.com/bravo-kernel/application-examples/blob/master/blog-various-solutions-to-the-elm-guide-age-excercise/starting-source.elm" target="_blank" rel="external">a copy</a>
+into the <a href="http://elm-lang.org/try" target="_blank" rel="external">online Elm Try editor</a>.</p>
+<h2 id="Solution_1-">Solution 1.</h2><p>Mimicing earlier instructions in the Guide this is probably the first solution
+users will come up with:</p>
+<ul>
+<li>adding a new record field <code>age</code> with type <code>Int</code> to the Model</li>
+<li>making sure the new model field has a default value (<code>0</code>)</li>
+<li>extending update <code>Msg</code> with <code>Age String</code> (not Int because onInput always returns a string)</li>
+<li>extending update Case-Of with a new pattern for <code>Age</code></li>
+<li>adding a new input field to the view</li>
+<li>adding a new if statement to the view <code>viewValidation</code> (with smart user feedback message)</li>
+</ul>
+<p>This will either:</p>
+<ul>
+<li>update the record’s <code>age</code> field with the given input value if a valid number was provided</li>
+<li>update the record’s <code>age</code> field with hardcoded <code>Result.withDefault</code> value if <code>String.toInt</code> conversion fails</li>
+</ul>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="import"><span class="keyword">import</span> Html exposing <span class="container">(..)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.App <span class="keyword">as</span> Html</span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.Attributes exposing <span class="container">(..)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.Events exposing <span class="container">(<span class="title">onInput</span>)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> String</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> =</span><br><span class="line">  <span class="type">Html</span>.beginnerProgram</span><br><span class="line">    &#123; model = model</span><br><span class="line">    , view = view</span><br><span class="line">    , update = update</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- MODEL</span></span><br><span class="line"></span><br><span class="line"><span class="typedef"><span class="keyword">type</span> alias <span class="type">Model</span> =</span></span><br><span class="line">  &#123; name : <span class="type">String</span></span><br><span class="line">  , password : <span class="type">String</span></span><br><span class="line">  , passwordAgain : <span class="type">String</span></span><br><span class="line">  , age: <span class="type">Int</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="title">model</span> : <span class="type">Model</span></span><br><span class="line"><span class="title">model</span> =</span><br><span class="line">  <span class="type">Model</span> <span class="string">""</span> <span class="string">""</span> <span class="string">""</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- UPDATE</span></span><br><span class="line"></span><br><span class="line"><span class="typedef"><span class="keyword">type</span> <span class="type">Msg</span></span></span><br><span class="line">    = <span class="type">Name</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">Password</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">PasswordAgain</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">Age</span> <span class="type">String</span></span><br><span class="line"></span><br><span class="line"><span class="title">update</span> : <span class="type">Msg</span> -&gt; <span class="type">Model</span> -&gt; <span class="type">Model</span></span><br><span class="line"><span class="title">update</span> action model =</span><br><span class="line">  <span class="keyword">case</span> action <span class="keyword">of</span></span><br><span class="line">    <span class="type">Name</span> name -&gt;</span><br><span class="line">      &#123; model | name = name &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">Password</span> password -&gt;</span><br><span class="line">      &#123; model | password = password &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">PasswordAgain</span> password -&gt;</span><br><span class="line">      &#123; model | passwordAgain = password &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- =====================================================</span></span><br><span class="line">    <span class="comment">-- Age get's passed in here as string by `onInput` so we</span></span><br><span class="line">    <span class="comment">-- need to convert it to Int as this is the type required</span></span><br><span class="line">    <span class="comment">-- by our Model definition. Since `String.toInt` conversion</span></span><br><span class="line">    <span class="comment">-- could fail (and thus break our application) we make</span></span><br><span class="line">    <span class="comment">-- sure to set default value to 0 using Result.</span></span><br><span class="line">    <span class="comment">-- =====================================================</span></span><br><span class="line">    <span class="type">Age</span> age -&gt;</span><br><span class="line">      &#123; model | age = <span class="type">String</span>.toInt age |&gt; <span class="type">Result</span>.withDefault <span class="number">0</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- VIEW</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title">view</span> : <span class="type">Model</span> -&gt; <span class="type">Html</span> <span class="type">Msg</span></span><br><span class="line"><span class="title">view</span> model =</span><br><span class="line">  div []</span><br><span class="line">    [ input [ <span class="typedef"><span class="keyword">type</span>' "text", placeholder "<span class="type">Name</span>", onInput <span class="type">Name</span> ] []</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">-- =====================================================</span></span><br><span class="line">    <span class="comment">-- Please note that `onInput` will always produce a</span></span><br><span class="line">    <span class="comment">-- string so even when we change the type "string" below</span></span><br><span class="line">    <span class="comment">-- to "number" (so the browser will check for numbers)</span></span><br><span class="line">    <span class="comment">-- we still need to do the String to Int conversion</span></span><br><span class="line">    <span class="comment">-- described above.</span></span><br><span class="line">    <span class="comment">-- =====================================================</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "string", placeholder "<span class="type">Age</span>", onInput <span class="type">Age</span> ] []</span></span><br><span class="line"></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "password", placeholder "<span class="type">Password</span>", onInput <span class="type">Password</span> ] []</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "password", placeholder "<span class="type">Re</span>-enter <span class="type">Password</span>", onInput <span class="type">PasswordAgain</span> ] []</span></span><br><span class="line">    , viewValidation model</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"><span class="title">viewValidation</span> : <span class="type">Model</span> -&gt; <span class="type">Html</span> msg</span><br><span class="line"><span class="title">viewValidation</span> model =</span><br><span class="line">  <span class="keyword">let</span></span><br><span class="line">    (color, message) =</span><br><span class="line">      <span class="keyword">if</span> model.age &lt; <span class="number">18</span> <span class="keyword">then</span></span><br><span class="line">        (<span class="string">"red"</span>, <span class="string">"You are not old enough to watch nude models yet"</span>)</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> model.password == model.passwordAgain <span class="keyword">then</span></span><br><span class="line">        (<span class="string">"green"</span>, <span class="string">"OK"</span>)</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        (<span class="string">"red"</span>, <span class="string">"Passwords do not match!"</span>)</span><br><span class="line">  <span class="keyword">in</span></span><br><span class="line">    div [ style [(<span class="string">"color"</span>, color)] ] [ text message ]</span><br></pre></td></tr></table></figure>
+<p>Copy-paste this code into the online editor, fill in a name and you will see
+the <code>age</code> field behaving as expected. Not bad for a first time Elm user, get
+some coffee.</p>
+<h2 id="Solution_2">Solution 2</h2><p>By now we realize that solution 1 is far from DRY. If we would change the
+model’s default value we would have to update our code in two places (
+the model’s default value and <code>Result.withDefault</code> value).</p>
+<p>The logical step to refactor would be using the model’s default value so we
+update our page a little, this time:</p>
+<ul>
+<li>replacing the existing Case-Of with in <code>update</code> a new case for <code>Age</code></li>
+<li>returning the current record as-is (with it’s default value for <code>age</code>) if String.toInt conversion fails</li>
+<li>updating the record’s age field with the integer provided by the user if the conversion
+succeeds</li>
+</ul>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="import"><span class="keyword">import</span> Html exposing <span class="container">(..)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.App <span class="keyword">as</span> Html</span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.Attributes exposing <span class="container">(..)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.Events exposing <span class="container">(<span class="title">onInput</span>)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> String</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> =</span><br><span class="line">  <span class="type">Html</span>.beginnerProgram</span><br><span class="line">    &#123; model = model</span><br><span class="line">    , view = view</span><br><span class="line">    , update = update</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- MODEL</span></span><br><span class="line"></span><br><span class="line"><span class="typedef"><span class="keyword">type</span> alias <span class="type">Model</span> =</span></span><br><span class="line">  &#123; name : <span class="type">String</span></span><br><span class="line">  , password : <span class="type">String</span></span><br><span class="line">  , passwordAgain : <span class="type">String</span></span><br><span class="line">  , age: <span class="type">Int</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="title">model</span> : <span class="type">Model</span></span><br><span class="line"><span class="title">model</span> =</span><br><span class="line">  <span class="type">Model</span> <span class="string">""</span> <span class="string">""</span> <span class="string">""</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- UPDATE</span></span><br><span class="line"></span><br><span class="line"><span class="typedef"><span class="keyword">type</span> <span class="type">Msg</span></span></span><br><span class="line">    = <span class="type">Name</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">Password</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">PasswordAgain</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">Age</span> <span class="type">String</span></span><br><span class="line"></span><br><span class="line"><span class="title">update</span> : <span class="type">Msg</span> -&gt; <span class="type">Model</span> -&gt; <span class="type">Model</span></span><br><span class="line"><span class="title">update</span> action model =</span><br><span class="line">  <span class="keyword">case</span> action <span class="keyword">of</span></span><br><span class="line">    <span class="type">Name</span> name -&gt;</span><br><span class="line">      &#123; model | name = name &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">Password</span> password -&gt;</span><br><span class="line">      &#123; model | password = password &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">PasswordAgain</span> password -&gt;</span><br><span class="line">      &#123; model | passwordAgain = password &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- =====================================================</span></span><br><span class="line">    <span class="comment">-- We still need to convert Age being passed in as type</span></span><br><span class="line">    <span class="comment">-- `String` to `Int` but this time we are not using </span></span><br><span class="line">    <span class="comment">-- Result.withDefault to set the default value to `0`.</span></span><br><span class="line">    <span class="comment">-- Instead, if String.toInt conversion fails we simply</span></span><br><span class="line">    <span class="comment">-- return the record as-is (effectively using the model's</span></span><br><span class="line">    <span class="comment">-- default value).</span></span><br><span class="line">    <span class="comment">-- =====================================================</span></span><br><span class="line">    <span class="type">Age</span> age -&gt;</span><br><span class="line">      <span class="keyword">case</span> <span class="type">String</span>.toInt age <span class="keyword">of</span></span><br><span class="line">        <span class="type">Result</span>.<span class="type">Err</span> err -&gt; <span class="comment">-- `err` will contain the error message, we could  use `_` and it would be ignored</span></span><br><span class="line">          model</span><br><span class="line">        <span class="type">Result</span>.<span class="type">Ok</span> age -&gt;</span><br><span class="line">          &#123; model | age = age &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- VIEW</span></span><br><span class="line"></span><br><span class="line"><span class="title">view</span> : <span class="type">Model</span> -&gt; <span class="type">Html</span> <span class="type">Msg</span></span><br><span class="line"><span class="title">view</span> model =</span><br><span class="line">  div []</span><br><span class="line">    [ input [ <span class="typedef"><span class="keyword">type</span>' "text", placeholder "<span class="type">Name</span>", onInput <span class="type">Name</span> ] []</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "string", placeholder "<span class="type">Age</span>", onInput <span class="type">Age</span> ] []</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "password", placeholder "<span class="type">Password</span>", onInput <span class="type">Password</span> ] []</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "password", placeholder "<span class="type">Re</span>-enter <span class="type">Password</span>", onInput <span class="type">PasswordAgain</span> ] []</span></span><br><span class="line">    , viewValidation model</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"><span class="title">viewValidation</span> : <span class="type">Model</span> -&gt; <span class="type">Html</span> msg</span><br><span class="line"><span class="title">viewValidation</span> model =</span><br><span class="line">  <span class="keyword">let</span></span><br><span class="line">    (color, message) =</span><br><span class="line">      <span class="keyword">if</span> model.age &lt; <span class="number">18</span> <span class="keyword">then</span></span><br><span class="line">        (<span class="string">"red"</span>, <span class="string">"You're not old enough to watch nude models yet"</span>)</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> model.password == model.passwordAgain <span class="keyword">then</span></span><br><span class="line">        (<span class="string">"green"</span>, <span class="string">"OK"</span>)</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        (<span class="string">"red"</span>, <span class="string">"Passwords do not match!"</span>)</span><br><span class="line">  <span class="keyword">in</span></span><br><span class="line">    div [ style [(<span class="string">"color"</span>, color)] ] [ text message ]</span><br></pre></td></tr></table></figure>
+<p>Again, copy-paste this code into the online editor. It should behave as expected. </p>
+<h2 id="Solution_3">Solution 3</h2><p>Even though solution 2 is already a lot nicer we would still need to duplicate
+a lot of Case-Of logic in the <code>update</code> layer if we were to add another input
+field requiring an integer.</p>
+<p>The logical step to refactor would be creating a custom function for the
+type conversion so we can re-use the logic. Again we update our page,
+this time:</p>
+<ul>
+<li>adding a custom function <code>inputStringToInt</code> (using <code>String</code> as parameter, returning <code>Int</code>)</li>
+<li>making the function return an Int if type conversion succeeds</li>
+<li>making the function return 0 if the type conversion fails</li>
+</ul>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="import"><span class="keyword">import</span> Debug</span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html exposing <span class="container">(..)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.App <span class="keyword">as</span> Html</span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.Attributes exposing <span class="container">(..)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.Events exposing <span class="container">(<span class="title">onInput</span>)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> String</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> =</span><br><span class="line">  <span class="type">Html</span>.beginnerProgram</span><br><span class="line">    &#123; model = model</span><br><span class="line">    , view = view</span><br><span class="line">    , update = update</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- MODEL</span></span><br><span class="line"></span><br><span class="line"><span class="typedef"><span class="keyword">type</span> alias <span class="type">Model</span> =</span></span><br><span class="line">  &#123; name : <span class="type">String</span></span><br><span class="line">  , password : <span class="type">String</span></span><br><span class="line">  , passwordAgain : <span class="type">String</span></span><br><span class="line">  , age: <span class="type">Int</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="title">model</span> : <span class="type">Model</span></span><br><span class="line"><span class="title">model</span> =</span><br><span class="line">  <span class="type">Model</span> <span class="string">""</span> <span class="string">""</span> <span class="string">""</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- UPDATE</span></span><br><span class="line"></span><br><span class="line"><span class="typedef"><span class="keyword">type</span> <span class="type">Msg</span></span></span><br><span class="line">    = <span class="type">Name</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">Password</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">PasswordAgain</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">Age</span> <span class="type">String</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title">update</span> : <span class="type">Msg</span> -&gt; <span class="type">Model</span> -&gt; <span class="type">Model</span></span><br><span class="line"><span class="title">update</span> action model =</span><br><span class="line">  <span class="keyword">case</span> action <span class="keyword">of</span></span><br><span class="line">    <span class="type">Name</span> name -&gt;</span><br><span class="line">      &#123; model | name = name &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">Password</span> password -&gt;</span><br><span class="line">      &#123; model | password = password &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">PasswordAgain</span> password -&gt;</span><br><span class="line">      &#123; model | passwordAgain = password &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- =====================================================</span></span><br><span class="line">    <span class="comment">-- Convert age to Int using custom function so we can</span></span><br><span class="line">    <span class="comment">-- re-use logic for other input fields requiring Ints.</span></span><br><span class="line">    <span class="comment">-- =====================================================</span></span><br><span class="line">    <span class="type">Age</span> age -&gt;</span><br><span class="line">      &#123; model | age = inputStringToInt age &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- VIEW</span></span><br><span class="line"></span><br><span class="line"><span class="title">view</span> : <span class="type">Model</span> -&gt; <span class="type">Html</span> <span class="type">Msg</span></span><br><span class="line"><span class="title">view</span> model =</span><br><span class="line">  div []</span><br><span class="line">    [ input [ <span class="typedef"><span class="keyword">type</span>' "text", placeholder "<span class="type">Name</span>", onInput <span class="type">Name</span> ] []</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "string", placeholder "<span class="type">Age</span>", onInput <span class="type">Age</span> ] []</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "password", placeholder "<span class="type">Password</span>", onInput <span class="type">Password</span> ] []</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "password", placeholder "<span class="type">Re</span>-enter <span class="type">Password</span>", onInput <span class="type">PasswordAgain</span> ] []</span></span><br><span class="line">    , viewValidation model</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"><span class="title">viewValidation</span> : <span class="type">Model</span> -&gt; <span class="type">Html</span> msg</span><br><span class="line"><span class="title">viewValidation</span> model =</span><br><span class="line">  <span class="keyword">let</span></span><br><span class="line">    (color, message) =</span><br><span class="line">      <span class="keyword">if</span> model.age &lt; <span class="number">18</span> <span class="keyword">then</span></span><br><span class="line">        (<span class="string">"red"</span>, <span class="string">"You're not old enough to watch nude models yet"</span>)</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> model.password == model.passwordAgain <span class="keyword">then</span></span><br><span class="line">        (<span class="string">"green"</span>, <span class="string">"OK"</span>)</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        (<span class="string">"red"</span>, <span class="string">"Passwords do not match!"</span>)</span><br><span class="line">  <span class="keyword">in</span></span><br><span class="line">    div [ style [(<span class="string">"color"</span>, color)] ] [ text message ]</span><br><span class="line"></span><br><span class="line"><span class="comment">-- CUSTOM FUNCTIONS</span></span><br><span class="line"></span><br><span class="line"><span class="title">inputStringToInt</span> : <span class="type">String</span> -&gt; <span class="type">Int</span></span><br><span class="line"></span><br><span class="line"><span class="title">inputStringToInt</span> input =</span><br><span class="line">  <span class="keyword">let</span> result = <span class="type">String</span>.toInt input</span><br><span class="line">  <span class="keyword">in</span> <span class="keyword">case</span> result <span class="keyword">of</span> </span><br><span class="line">    <span class="type">Err</span> msg -&gt; <span class="number">0</span> <span class="comment">-- `msg` will contain the error message, we could use `_` instead and it would be ignored</span></span><br><span class="line">    <span class="type">Ok</span> converted -&gt;  converted</span><br></pre></td></tr></table></figure>
+<p>By know you should know the drill so… copy, paste, enjoy and get some coffee
+(the good part is coming next).</p>
+<h2 id="Solution_4-">Solution 4.</h2><p>By now the concept of types should have landed and if things went well
+there are probably two things on your mind right now:</p>
+<ol>
+<li>the major flaw in all previous solutions: how to make <code>age</code> optional (since we don’t want <code>0</code> as default value)</li>
+<li>how on earth that would ever be possible knowing that Elm doesn’t support <code>null</code> or <code>undefined</code>?</li>
+</ol>
+<p>In all honesty, this is also probably the moment you should join the 
+<a href="http://elmlang.herokuapp.com/" target="_blank" rel="external">Elm Slack</a> beginners channel and hope some of
+the friendly people out there will help you out.</p>
+<p>Luckily… we’ve  already done that and the solution for our problem is found
+in the Elm core library
+<a href="http://package.elm-lang.org/packages/elm-lang/core/4.0.1/Maybe" target="_blank" rel="external">Maybe</a>, literally stating:</p>
+<blockquote>
+<p>A Maybe can help you with optional arguments, error handling, and <strong>records with optional fields</strong>.</p>
+</blockquote>
+<p>For the last time we will update our page, this time:</p>
+<ul>
+<li>changing the model’s <code>age</code> field type to <code>Maybe Int</code></li>
+<li>changing the model’s <code>age</code> field default value to <code>Nothing</code> (think of it as <code>null</code>)</li>
+<li>updating our custom function <code>inputStringToInt</code> to:<ul>
+<li>return <code>Maybe Int</code> (instead of <code>Int</code>)</li>
+<li>return <code>Nothing</code> if the type conversion fails</li>
+<li>return a <code>Just Int</code> value if the conversion succeeds</li>
+</ul>
+</li>
+</ul>
+<p>Please note that we also MUST replace the if statement inside
+<code>viewValidation</code> with a Case-Of because standard Elm comparisons will only 
+accept basic types like integers, strings, etc.</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="import"><span class="keyword">import</span> Html exposing <span class="container">(..)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.App <span class="keyword">as</span> Html</span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.Attributes exposing <span class="container">(..)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> Html.Events exposing <span class="container">(<span class="title">onInput</span>)</span></span></span><br><span class="line"><span class="import"><span class="keyword">import</span> String</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> =</span><br><span class="line">  <span class="type">Html</span>.beginnerProgram</span><br><span class="line">    &#123; model = model</span><br><span class="line">    , view = view</span><br><span class="line">    , update = update</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- MODEL</span></span><br><span class="line"></span><br><span class="line"><span class="typedef"><span class="keyword">type</span> alias <span class="type">Model</span> =</span></span><br><span class="line">  &#123; name : <span class="type">String</span></span><br><span class="line">  , password : <span class="type">String</span></span><br><span class="line">  , passwordAgain : <span class="type">String</span></span><br><span class="line">  , age: <span class="type">Maybe</span> <span class="type">Int</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="title">model</span> : <span class="type">Model</span></span><br><span class="line"><span class="title">model</span> =</span><br><span class="line">  <span class="type">Model</span> <span class="string">""</span> <span class="string">""</span> <span class="string">""</span> <span class="type">Nothing</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- UPDATE</span></span><br><span class="line"></span><br><span class="line"><span class="typedef"><span class="keyword">type</span> <span class="type">Msg</span></span></span><br><span class="line">    = <span class="type">Name</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">Password</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">PasswordAgain</span> <span class="type">String</span></span><br><span class="line">    | <span class="type">Age</span> <span class="type">String</span> <span class="comment">-- we keep this a String because that's what we get from `onInput` (converted to Maybe Int before inserting into model)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title">update</span> : <span class="type">Msg</span> -&gt; <span class="type">Model</span> -&gt; <span class="type">Model</span></span><br><span class="line"><span class="title">update</span> action model =</span><br><span class="line">  <span class="keyword">case</span> action <span class="keyword">of</span></span><br><span class="line">    <span class="type">Name</span> name -&gt;</span><br><span class="line">      &#123; model | name = name &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">Password</span> password -&gt;</span><br><span class="line">      &#123; model | password = password &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">PasswordAgain</span> password -&gt;</span><br><span class="line">      &#123; model | passwordAgain = password &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">Age</span> age -&gt;</span><br><span class="line">       &#123; model | age = inputStringToInt age &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- VIEW</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title">view</span> : <span class="type">Model</span> -&gt; <span class="type">Html</span> <span class="type">Msg</span></span><br><span class="line"><span class="title">view</span> model =</span><br><span class="line">  div []</span><br><span class="line">    [ input [ <span class="typedef"><span class="keyword">type</span>' "text", placeholder "<span class="type">Name</span>", onInput <span class="type">Name</span> ] []</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "string", placeholder "<span class="type">Age</span>", onInput <span class="type">Age</span> ] []</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "password", placeholder "<span class="type">Password</span>", onInput <span class="type">Password</span> ] []</span></span><br><span class="line">    , input [ <span class="typedef"><span class="keyword">type</span>' "password", placeholder "<span class="type">Re</span>-enter <span class="type">Password</span>", onInput <span class="type">PasswordAgain</span> ] []</span></span><br><span class="line">    , viewValidation model</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"><span class="title">viewValidation</span> : <span class="type">Model</span> -&gt; <span class="type">Html</span> msg</span><br><span class="line"></span><br><span class="line"><span class="title">viewValidation</span> model =</span><br><span class="line">  <span class="keyword">let</span></span><br><span class="line">    (color, message) =</span><br><span class="line">      <span class="keyword">case</span> model.age <span class="keyword">of</span></span><br><span class="line">        <span class="type">Nothing</span> -&gt;</span><br><span class="line">          (<span class="string">"red"</span>, <span class="string">"Please provide your age"</span>)</span><br><span class="line">        <span class="type">Just</span> age -&gt; <span class="keyword">if</span> age &lt; <span class="number">18</span> <span class="keyword">then</span></span><br><span class="line">          (<span class="string">"red"</span>, <span class="string">"You're not old enough to watch nude models yet!"</span>)</span><br><span class="line">          <span class="keyword">else</span> <span class="keyword">if</span> model.password == <span class="string">""</span> <span class="keyword">then</span></span><br><span class="line">            (<span class="string">"red"</span>, <span class="string">"Please provide a password"</span>)                </span><br><span class="line">          <span class="keyword">else</span> <span class="keyword">if</span> model.password == model.passwordAgain <span class="keyword">then</span></span><br><span class="line">           (<span class="string">"green"</span>, <span class="string">"OK"</span>)</span><br><span class="line">          <span class="keyword">else</span></span><br><span class="line">            (<span class="string">"red"</span>, <span class="string">"Passwords do not match!"</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">in</span></span><br><span class="line">    div [ style [(<span class="string">"color"</span>, color)] ] [ text message ]</span><br><span class="line"></span><br><span class="line"><span class="comment">-- CUSTOM FUNCTIONS</span></span><br><span class="line"></span><br><span class="line"><span class="title">inputStringToInt</span> : <span class="type">String</span> -&gt; <span class="type">Maybe</span> <span class="type">Int</span></span><br><span class="line"></span><br><span class="line"><span class="title">inputStringToInt</span> input =</span><br><span class="line">  <span class="keyword">let</span> result = <span class="type">String</span>.toInt input</span><br><span class="line">  <span class="keyword">in</span> <span class="keyword">case</span> result <span class="keyword">of</span></span><br><span class="line">    <span class="type">Err</span> _ -&gt; <span class="type">Nothing</span></span><br><span class="line">    <span class="type">Ok</span> converted -&gt; <span class="type">Just</span> converted</span><br></pre></td></tr></table></figure>
+<p>Copy, paste and be merry. We have not only completed the <code>age</code> challenge, in 
+the process we learned about types and how to convert them while keeping
+our code DRY and highly maintainable. Thank you Elm!</p>
+<h2 id="Closing_Notes">Closing Notes</h2><p>As with all learning curves these are obviously only the first baby steps into
+the world called Elm but it should provide you with enough confidence to continue
+with the next chapter of the Guide.</p>
+<p>Another thing to note is that “there is more than one way to do it” and thus
+the provided solutions are non-exhaustive and most likely a lot of different
+approaches are possible and they may all be valid and or even better.</p>
+<p>For example, the following feedback was provided on Slack:</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">if</span> condition <span class="keyword">then</span> x <span class="keyword">else</span> y</span><br></pre></td></tr></table></figure>
+<p>is equivalent to</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">case condition of&#10;  True -&#62; x&#10;  False -&#62; y</span><br></pre></td></tr></table></figure>
+<p>Which is more readable, and abstracts away the pattern
+matching. I would always prefer using abstraction instead of direct pattern
+matching in general, because that means if the implementations of the type
+changes in the future (unlikely for Bool types) you won’t have to update every
+single function that consumes the type. It’s effectively a way to achieve
+encapsulation.</p>
+<p>So still lots to explore, learn and try but remember… if it compiles it’s good ;)</p>
+<p><em>Big thank you to Elm Community members 
+<a href="https://github.com/mattsenior" target="_blank" rel="external">mattsenior</a>, 
+<a href="https://github.com/szabba" target="_blank" rel="external">szabba</a> and
+<a href="https://github.com/iteloo" target="_blank" rel="external">iteloo</a>
+for their help while creating this post.</em></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/elm/">elm</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/elm/">elm</a>, <a href="/tags/elm-lang/">elm-lang</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="sponsor">
+  <h1 class="title">Support this blog</h1>
+
+  <div class="leaderboard">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- bravo-kernel-blog-leaderboard -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1161412231963156"
+         data-ad-slot="4755382371"
+         data-ad-format="auto">
+    </ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+</section>
+
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:bravo-kernel.com">
+  </form>
+</div>
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/api/" style="font-size: 18px;">api</a> <a href="/tags/apple/" style="font-size: 10px;">apple</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cakephp/" style="font-size: 20px;">cakephp</a> <a href="/tags/cakephp3/" style="font-size: 16px;">cakephp3</a> <a href="/tags/chef/" style="font-size: 10px;">chef</a> <a href="/tags/chef-dk/" style="font-size: 10px;">chef-dk</a> <a href="/tags/cocktails/" style="font-size: 10px;">cocktails</a> <a href="/tags/composer/" style="font-size: 12px;">composer</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/debian/" style="font-size: 20px;">debian</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/dutch/" style="font-size: 10px;">dutch</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/elm/" style="font-size: 10px;">elm</a> <a href="/tags/elm-lang/" style="font-size: 10px;">elm-lang</a> <a href="/tags/fim/" style="font-size: 10px;">fim</a> <a href="/tags/foc/" style="font-size: 12px;">foc</a> <a href="/tags/git/" style="font-size: 20px;">git</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/ipad/" style="font-size: 10px;">ipad</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jwt/" style="font-size: 10px;">jwt</a> <a href="/tags/kitchen/" style="font-size: 10px;">kitchen</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/microsoft/" style="font-size: 16px;">microsoft</a> <a href="/tags/minecraft/" style="font-size: 12px;">minecraft</a> <a href="/tags/misc/" style="font-size: 12px;">misc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/mssql/" style="font-size: 10px;">mssql</a> <a href="/tags/nginx/" style="font-size: 14px;">nginx</a> <a href="/tags/octopress/" style="font-size: 16px;">octopress</a> <a href="/tags/octostrap3/" style="font-size: 12px;">octostrap3</a> <a href="/tags/office/" style="font-size: 10px;">office</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/phpcs/" style="font-size: 10px;">phpcs</a> <a href="/tags/rest/" style="font-size: 16px;">rest</a> <a href="/tags/security/" style="font-size: 12px;">security</a> <a href="/tags/server-2012/" style="font-size: 10px;">server-2012</a> <a href="/tags/shellshock/" style="font-size: 10px;">shellshock</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/ubuntu/" style="font-size: 12px;">ubuntu</a> <a href="/tags/vagrant/" style="font-size: 10px;">vagrant</a> <a href="/tags/validator/" style="font-size: 10px;">validator</a> <a href="/tags/wheezy/" style="font-size: 16px;">wheezy</a> <a href="/tags/windows10/" style="font-size: 10px;">windows10</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a>
+  </div>
+</div>
+
+
+  <div class="advertisement">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- bravo-kernel-blog-270 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:270px;height:270px"
+		 data-ad-client="ca-pub-1161412231963156"
+		 data-ad-slot="9643145573"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2016 bravo-kernel
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'bravo-kernel';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
