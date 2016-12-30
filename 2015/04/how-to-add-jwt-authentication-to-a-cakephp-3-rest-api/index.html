@@ -71,7 +71,7 @@ To prevent (yet another) pa">
         <div class="icon"></div>
         <time datetime="2015-04-20T05:22:32.000Z"><a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">Apr 20 2015</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Nov 22 2016</span></span>
+			<span class="updated" title="Post Updated"><span>Dec 30 2016</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-04-23-how-to-add-jwt-authentication-to-a-cakephp-3-rest-api.md">Improve on Github</a></div>
       
@@ -276,7 +276,13 @@ body containing the JWT token.</p>
 <p>Should return Status Code 200 (Success) with a JSON response body containing
 only the JWT token similar to:</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "<span class="attribute">success</span>": <span class="value"><span class="literal">true</span></span>,</span><br><span class="line">    "<span class="attribute">data</span>": <span class="value">&#123;</span><br><span class="line">        "<span class="attribute">token</span>": <span class="value"><span class="string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.q2chPMiKRzwrO3v48fi90HyJPHDLOXtwEKr7EcU3GPk"</span></span><br><span class="line">    </span>&#125;</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="10-_Testing_JWT_Authentication">10. Testing JWT Authentication</h2><h3 id="How_it_works-2">How it works</h3><p>When accessing an API resource that requires authentication the JWT Plugin will look for a token
+<h2 id="10-_Testing_JWT_Authentication">10. Testing JWT Authentication</h2><blockquote>
+<p><strong> Before you begin testing:</strong> please be aware that some servers (like Apache) don’t automatically 
+populate $_SERVER[‘HTTP_AUTHORIZATION’] even when the Authorization header is set. Make sure to 
+first follow <a href="https://github.com/ADmad/cakephp-jwt-auth#working" target="_blank" rel="external">these instructions</a>
+if the tests below are not functioning as described.</p>
+</blockquote>
+<h3 id="How_it_works-2">How it works</h3><p>When accessing an API resource that requires authentication the JWT Plugin will look for a token
 in the <code>Authorization</code> header and will validate it using the <code>Salt</code> value used by your application.</p>
 <p>If validation is successful a JSON 200 response (Success) will be returned with application produced body.</p>
 <p><br></p>
