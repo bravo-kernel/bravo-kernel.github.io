@@ -76,7 +76,7 @@ Ma">
         <div class="icon"></div>
         <time datetime="2015-10-11T13:45:43.000Z"><a href="/2015/10/setting-up-hexo-on-windows/">Oct 11 2015</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Nov 22 2016</span></span>
+			<span class="updated" title="Post Updated"><span>Dec 30 2016</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-10-11-setting-up-hexo-on-windows.md">Improve on Github</a></div>
       
@@ -105,6 +105,12 @@ inside the Git Bash:</p>
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+<h2 id="Re-installing_hexo">Re-installing hexo</h2><p>For those re-installing Hexo and using an existing hexo blog repository:</p>
+<ul>
+<li>do NOT create the directory described step 1 but checkout your blog repo instead</li>
+<li>cd into your repo directory and git checkout the <code>source</code> branch</li>
+<li>then simply follow the exact same steps (starting from 2) but SKIP the <code>hexo init</code> command</li>
+</ul>
 <h2 id="Installing_hexo">Installing hexo</h2><p>Please note that all commands are to be executed within the Git Bash.</p>
 <ol>
 <li><p>Create a new directory that will hold your blog</p>
@@ -125,12 +131,6 @@ inside the Git Bash:</p>
 </ul>
 </li>
 </ol>
-<h2 id="Re-installing_hexo">Re-installing hexo</h2><p>If you are re-installing an existing blog:</p>
-<ul>
-<li>do not create a new directory but checkout your blog repo</li>
-<li>git checkout the <code>source</code> branch</li>
-<li>follow the exact same steps but make sure to NOT run the <code>hexo init</code> command</li>
-</ul>
 <h2 id="Deploying">Deploying</h2><p>The hexo git deployer has taken all the hard work out of deploying your
 blog to your master repo.</p>
 <ol>
