@@ -43,7 +43,7 @@ During this tutorial you will:
 
 To complete this tutorial you will need a fully configurable REST client like:
 
-+ the [Postman](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm) plugin for Chrome (recommended)
++ the [Postman](https://chrome.google.com/webstore/search/postman?hl=en&_category=apps) plugin for Chrome (recommended)
 + the [RESTClient](https://addons.mozilla.org/nl/firefox/addon/restclient/) plugin for Firefox
 + the [Cocoa REST Client](http://mmattozzi.github.io/cocoa-rest-client/) if you are on a Mac
 
