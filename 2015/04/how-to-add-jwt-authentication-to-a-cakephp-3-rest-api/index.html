@@ -1,0 +1,440 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>How to add JWT Authentication to a CakePHP 3 REST API | Bravo Kernel</title>
+  <meta name="author" content="bravo-kernel">
+  
+  <meta name="description" content="In this follow-up post to
+How to prefix route a CakePHP 3 REST API
+we will implement JSON Web Token (JWT) authentication.
+
+To prevent (yet another) pa">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="How to add JWT Authentication to a CakePHP 3 REST API"/>
+  <meta property="og:site_name" content="Bravo Kernel"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Bravo Kernel" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <script data-ad-client="ca-pub-1161412231963156" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40048049-1']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Bravo Kernel</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">Feed</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-04-20T05:22:32.000Z"><a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">Apr 20 2015</a></time>
+		
+			<span class="updated" title="Post Updated"><span>Mar 14 2018</span></span>
+        
+		<div class="github-improve"><a target="_blank" rel="noopener" href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-04-23-how-to-add-jwt-authentication-to-a-cakephp-3-rest-api.md">Improve on Github</a></div>
+      
+      
+  
+    <h1 class="title">How to add JWT Authentication to a CakePHP 3 REST API</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>In this follow-up post to
+<a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">How to prefix route a CakePHP 3 REST API</a>
+we will implement <a href="http://jwt.io/" target="_blank" rel="noopener">JSON Web Token</a> (JWT) authentication.</p>
+<p><a href="https://app.getpostman.com/run-collection/197398a609a6d233a8c2" target="_blank" rel="noopener"><img src="https://run.pstmn.io/button.svg" alt="Run in Postman"></a></p>
+<p>To prevent (yet another) partial/pointless JWT tutorial we will provide you with step-by-step
+instructions:</p>
+<ul>
+<li>describing a full blown, real world implementation</li>
+<li>usable as drop-in code for (almost) any CakePHP 3 application requiring API authentication</li>
+<li>spiced up with background information to help you understand the JWT concept</li>
+</ul>
+<blockquote>
+<p><strong>Important</strong>: please remember to use SSL/TLS encrypted connections for ALL API traffic
+to prevent man in the middle attackers from seeing and stealing the tokens.</p>
+</blockquote>
+<p>During this tutorial you will:</p>
+<ul>
+<li>add some basic user data to the application</li>
+<li>enable password hashing</li>
+<li>add the JWT plugin</li>
+<li>update your prefix route</li>
+<li>enable JWT Authentication for API resources</li>
+<li>create the API UsersController</li>
+<li>implement user registration using the API</li>
+<li>sanity check your first JWT token</li>
+<li>implement JWT token requests</li>
+<li>test JWT protected API resources</li>
+</ul>
+<h2 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h2><p>To complete this tutorial you will need a fully configurable REST client like:</p>
+<ul>
+<li><a href="https://www.getpostman.com/docs/introduction" target="_blank" rel="noopener">Postman</a></li>
+<li>the <a href="https://addons.mozilla.org/nl/firefox/addon/restclient/" target="_blank" rel="noopener">RESTClient</a> plugin for Firefox</li>
+<li>the <a href="http://mmattozzi.github.io/cocoa-rest-client/" target="_blank" rel="noopener">Cocoa REST Client</a> if you are on a Mac</li>
+</ul>
+<h2 id="Before-We-Begin"><a href="#Before-We-Begin" class="headerlink" title="Before We Begin"></a>Before We Begin</h2><p>This is part four of the CakePHP 3 REST API tutorial series:</p>
+<ol>
+<li><a href="/2015/04/how-to-build-a-cakephp-3-rest-api-in-minutes/">How to build a CakePHP 3 REST API in minutes</a></li>
+<li><a href="/2015/04/how-to-use-a-cakephp-3-rest-api/">How to use a CakePHP 3 REST API</a></li>
+<li><a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">How to prefix route a CakePHP 3 REST API</a></li>
+<li>How to add JWT Authentication to a CakePHP 3 REST API</li>
+<li><a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">How to make your CakePHP 3 API produce JSON API</a></li>
+<li><a href="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/">How to use a CakePHP API as the data backend for Ember in 30 minutes</a></li>
+</ol>
+<p>Before starting this tutorial either:</p>
+<ul>
+<li>complete the previous posts</li>
+<li>start fresh by using these
+<a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-prefix-route-a-cakephp3-rest-api" target="_blank" rel="noopener">end-state application sources</a>,
+composer installing and running the database migration</li>
+</ul>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><p>The web is already filled with information about JSON Web Token (JWT) Authentication so we will not
+duplicate it here but in a nutshell it allows authenticating users against a single token instead
+of the more commonly used username/password.</p>
+<p>As a side effect our API will benefit from some (very cool) additional JWT functionality like:</p>
+<ul>
+<li>No more need for sessions</li>
+<li>No more need to protect our API against Cross-Site Request Forgery (CSRF)</li>
+<li>Support for granular security through the use of JWT scopes</li>
+</ul>
+<h2 id="2-Adding-Users-To-The-Application"><a href="#2-Adding-Users-To-The-Application" class="headerlink" title="2. Adding Users To The Application"></a>2. Adding Users To The Application</h2><h3 id="Populate-the-database"><a href="#Populate-the-database" class="headerlink" title="Populate the database"></a>Populate the database</h3><p>Download this CakePHP
+<a href="https://github.com/bravo-kernel/application-examples/blob/master/blog-how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/config/Migrations/20150420112310_users.php" target="_blank" rel="noopener">database migration file</a>
+to your <code>config/Migrations</code> directory.</p>
+<p>Now run the following command inside your application’s root directory to
+create the <code>users</code> table:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/cake migrations migrate</span><br></pre></td></tr></table></figure>
+<h3 id="Generate-the-basic-controller-entity-table-and-views"><a href="#Generate-the-basic-controller-entity-table-and-views" class="headerlink" title="Generate the basic controller, entity, table and views"></a>Generate the basic controller, entity, table and views</h3><p>To prepare for testing “basic” HTML access generate the required controller, entity, table and views
+by running the following command inside your application’s root directory:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/cake bake all Users</span><br></pre></td></tr></table></figure>
+<h3 id="Configure-Password-Hashing"><a href="#Configure-Password-Hashing" class="headerlink" title="Configure Password Hashing"></a>Configure Password Hashing</h3><p>CakePHP 3 comes with a convenient <a href="http://book.cakephp.org/3.0/en/controllers/components/authentication.html#hashing-passwords" target="_blank" rel="noopener">PasswordHasher</a>
+that will automatically encrypt user passwords using the very strong
+<a href="http://en.wikipedia.org/wiki/Bcrypt" target="_blank" rel="noopener">bcrypt</a> hashing algorithm.
+To enable password hashing for your application make sure to add both the class and the method shown below to <code>src/Model/Entity/User.php</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Cake</span>\<span class="title">Auth</span>\<span class="title">DefaultPasswordHasher</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">_setPassword</span><span class="params">($password)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">new</span> DefaultPasswordHasher)-&gt;hash($password);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Verify"><a href="#Verify" class="headerlink" title="Verify"></a>Verify</h3><p>If things went well you should now be able to:</p>
+<ul>
+<li>browse to <code>http://cake3api.app/users</code></li>
+<li>create a new user</li>
+<li>see the created user with hashed password</li>
+</ul>
+<img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/browser-users-index.png" title="Users index">
+<h2 id="3-Adding-the-JWT-Plugin"><a href="#3-Adding-the-JWT-Plugin" class="headerlink" title="3. Adding the JWT Plugin"></a>3. Adding the JWT Plugin</h2><p>Run the following command inside your application’s root directory to
+composer install the <a href="https://github.com/ADmad/cakephp-jwt-auth" target="_blank" rel="noopener">JwtAuth plugin</a>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require admad/cakephp-jwt-auth</span><br></pre></td></tr></table></figure>
+<p>Now run the following command to make your application use the plugin:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/cake plugin load ADmad/JwtAuth</span><br></pre></td></tr></table></figure>
+<h2 id="4-Updating-The-Prefix-Route"><a href="#4-Updating-The-Prefix-Route" class="headerlink" title="4. Updating The Prefix Route"></a>4. Updating The Prefix Route</h2><p>The API prefix route created during the previous tutorial needs updating:</p>
+<ul>
+<li>to enable the <code>Api\UsersController</code> for API usage</li>
+<li>to connect custom action <code>/register</code> to standard <a href>CRUD Plugin</a> action <code>/add</code></li>
+<li>to automatically create routes for the non-standard <code>/register</code> and <code>/token</code> actions</li>
+</ul>
+<p><strong>Pro tip:</strong> we connect the <code>/register</code> action so we can simply extend the CRUD Plugin <code>add()</code>
+method and benefit of already available logic like validation and response codes instead of having to
+reinvent the wheel.</p>
+<p>Make sure to update the <code>api</code> prefix route in <code>config/routes.php</code> to resemble:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Router::prefix(<span class="string">'api'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($routes)</span> </span>&#123;</span><br><span class="line">    $routes-&gt;extensions([<span class="string">'json'</span>, <span class="string">'xml'</span>]);</span><br><span class="line">    $routes-&gt;resources(<span class="string">'Cocktails'</span>);</span><br><span class="line">    $routes-&gt;resources(<span class="string">'Users'</span>);</span><br><span class="line">    Router::connect(<span class="string">'/api/users/register'</span>, [<span class="string">'controller'</span> =&gt; <span class="string">'Users'</span>, <span class="string">'action'</span> =&gt; <span class="string">'add'</span>, <span class="string">'prefix'</span> =&gt; <span class="string">'api'</span>]);</span><br><span class="line">    $routes-&gt;fallbacks(<span class="string">'InflectedRoute'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="5-Enabling-JWT-Authentication"><a href="#5-Enabling-JWT-Authentication" class="headerlink" title="5. Enabling JWT Authentication"></a>5. Enabling JWT Authentication</h2><p>To enable JWT Authentication for all API resources extend the
+<code>src/Controller/Api/AppController.php</code> file created during the previous tutorial with the following
+<code>initialize</code> method so the file looks similar to:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Controller</span>\<span class="title">Api</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Cake</span>\<span class="title">Controller</span>\<span class="title">Controller</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Cake</span>\<span class="title">Event</span>\<span class="title">Event</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">use</span> \<span class="title">Crud</span>\<span class="title">Controller</span>\<span class="title">ControllerTrait</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">initialize</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">parent</span>::initialize();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;loadComponent(<span class="string">'RequestHandler'</span>);</span><br><span class="line">        <span class="keyword">$this</span>-&gt;loadComponent(<span class="string">'Crud.Crud'</span>, [</span><br><span class="line">            <span class="string">'actions'</span> =&gt; [</span><br><span class="line">                <span class="string">'Crud.Index'</span>,</span><br><span class="line">                <span class="string">'Crud.View'</span>,</span><br><span class="line">                <span class="string">'Crud.Add'</span>,</span><br><span class="line">                <span class="string">'Crud.Edit'</span>,</span><br><span class="line">                <span class="string">'Crud.Delete'</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="string">'listeners'</span> =&gt; [</span><br><span class="line">                <span class="string">'Crud.Api'</span>,</span><br><span class="line">                <span class="string">'Crud.ApiPagination'</span>,</span><br><span class="line">                <span class="string">'Crud.ApiQueryLog'</span></span><br><span class="line">            ]</span><br><span class="line">        ]);</span><br><span class="line">        <span class="keyword">$this</span>-&gt;loadComponent(<span class="string">'Auth'</span>, [</span><br><span class="line">            <span class="string">'storage'</span> =&gt; <span class="string">'Memory'</span>,</span><br><span class="line">            <span class="string">'authenticate'</span> =&gt; [</span><br><span class="line">                <span class="string">'Form'</span> =&gt; [</span><br><span class="line">                    <span class="string">'scope'</span> =&gt; [<span class="string">'Users.active'</span> =&gt; <span class="number">1</span>]</span><br><span class="line">                ],</span><br><span class="line">                <span class="string">'ADmad/JwtAuth.Jwt'</span> =&gt; [</span><br><span class="line">                    <span class="string">'parameter'</span> =&gt; <span class="string">'token'</span>,</span><br><span class="line">                    <span class="string">'userModel'</span> =&gt; <span class="string">'Users'</span>,</span><br><span class="line">                    <span class="string">'scope'</span> =&gt; [<span class="string">'Users.active'</span> =&gt; <span class="number">1</span>],</span><br><span class="line">                    <span class="string">'fields'</span> =&gt; [</span><br><span class="line">                        <span class="string">'username'</span> =&gt; <span class="string">'id'</span></span><br><span class="line">                    ],</span><br><span class="line">                    <span class="string">'queryDatasource'</span> =&gt; <span class="keyword">true</span></span><br><span class="line">                ]</span><br><span class="line">            ],</span><br><span class="line">            <span class="string">'unauthorizedRedirect'</span> =&gt; <span class="keyword">false</span>,</span><br><span class="line">            <span class="string">'checkAuthIn'</span> =&gt; <span class="string">'Controller.initialize'</span></span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>we use <code>Memory</code> based non-persistent storage for the authenticated user
+(instead of Cake’s session based default)</li>
+<li>FormAuthenticate MUST be included here or AuthComponent will not be able to validate the
+posted (non-JWT) JSON credentials during the <code>/token</code> action</li>
+<li>by enabling <code>queryDataSource</code> the <code>sub</code> field in the JWT token will be used
+to query the database for user information (using the User model)</li>
+<li><code>checkAuthIn</code> makes user information available in all Controller
+<code>beforeFilter()</code> functions</li>
+</ul>
+<h3 id="Verify-Authentication-Is-Enabled"><a href="#Verify-Authentication-Is-Enabled" class="headerlink" title="Verify Authentication Is Enabled"></a>Verify Authentication Is Enabled</h3><p>To verify your API resources now actually require authentication query
+<code>http://cake3api.app/api/cocktails.json</code>.</p>
+<p>Should return Status Code 401 (Unauthorized) with a JSON response body similar to:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"message"</span>: <span class="string">"You are not authorized to access that location."</span>,</span><br><span class="line">        <span class="attr">"url"</span>: <span class="string">"\/api\/cocktails.json"</span>,</span><br><span class="line">        <span class="attr">"code"</span>: <span class="number">401</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="6-Creating-the-API-UsersController"><a href="#6-Creating-the-API-UsersController" class="headerlink" title="6. Creating the API UsersController"></a>6. Creating the API UsersController</h2><p>We will now create a UsersController responsible for handling all authentication in the <code>Api</code> namespace:</p>
+<ul>
+<li>using standard <a href="http://book.cakephp.org/3.0/en/controllers/components/authentication.html#making-actions-public" target="_blank" rel="noopener">AuthComponent allow logic</a>
+to allow non-authenticated access to the <code>/add</code> and <code>/token</code> actions</li>
+<li>already containing all required <code>use</code> statements required later on</li>
+</ul>
+<p>Create new file <code>src/Controller/Api/UsersController</code> with the following code:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Controller</span>\<span class="title">Api</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Cake</span>\<span class="title">Event</span>\<span class="title">Event</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Cake</span>\<span class="title">Network</span>\<span class="title">Exception</span>\<span class="title">UnauthorizedException</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Cake</span>\<span class="title">Utility</span>\<span class="title">Security</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Firebase</span>\<span class="title">JWT</span>\<span class="title">JWT</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UsersController</span> <span class="keyword">extends</span> <span class="title">AppController</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">initialize</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">parent</span>::initialize();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;Auth-&gt;allow([<span class="string">'add'</span>, <span class="string">'token'</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong> Auth-allowed actions MUST be set inside <code>initialize()</code>
+because we enabled the <code>checkAuthIn</code> configuration option.</p>
+<h2 id="7-Implementing-API-User-Registration"><a href="#7-Implementing-API-User-Registration" class="headerlink" title="7. Implementing API User Registration"></a>7. Implementing API User Registration</h2><h3 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h3><p>User registration through the API does not require JWT authentication and is basically a matter of
+posting valid JSON data to the <code>/add</code> action in our UsersController so the <a href="xx">CRUD Plugin</a>
+can handle validation and creating the user record.</p>
+<p>If the user is created succesfully a JSON 201 response (Created) will be returned with a response
+body containing:</p>
+<ul>
+<li>the id of the new user</li>
+<li>a <code>token</code> field containing the new user’s JWT token</li>
+</ul>
+<img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/jwt-primer-registration.png" title="JWT primer: user registration">
+<h3 id="Create-the-register-action"><a href="#Create-the-register-action" class="headerlink" title="Create the /register  action"></a>Create the /register  action</h3><p>Because the CRUD plugin normally only returns the id of the new record we will add the JWT token
+to the JSON response body by extending the <code>add()</code> method with some custom CRUD
+<a href="http://crud.readthedocs.org/en/latest/actions/add.html#crud-aftersave" target="_blank" rel="noopener">afterSave</a>
+and <a href="http://crud.readthedocs.org/en/latest/actions/add.html#serialize" target="_blank" rel="noopener">serialize</a> logic.</p>
+<p>To implement user registration add the following <code>add()</code> method to <code>src/Controller/Api/UsersController.php</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">$this</span>-&gt;Crud-&gt;on(<span class="string">'afterSave'</span>, <span class="function"><span class="keyword">function</span><span class="params">(Event $event)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($event-&gt;subject-&gt;created) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;set(<span class="string">'data'</span>, [</span><br><span class="line">                <span class="string">'id'</span> =&gt; $event-&gt;subject-&gt;entity-&gt;id,</span><br><span class="line">                <span class="string">'token'</span> =&gt; JWT::encode(</span><br><span class="line">                    [</span><br><span class="line">                        <span class="string">'sub'</span> =&gt; $event-&gt;subject-&gt;entity-&gt;id,</span><br><span class="line">                        <span class="string">'exp'</span> =&gt;  time() + <span class="number">604800</span></span><br><span class="line">                    ],</span><br><span class="line">                Security::salt())</span><br><span class="line">            ]);</span><br><span class="line">            <span class="keyword">$this</span>-&gt;Crud-&gt;action()-&gt;config(<span class="string">'serialize.data'</span>, <span class="string">'data'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;Crud-&gt;execute();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong> even though this is not required we are adding the <a href="http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#expDef" target="_blank" rel="noopener">JWT exp claim</a>
+to the token payload so the token will expire after one week, effectively forcing the user to request
+a new unique token using the <code>/token</code> action.</p>
+<p><strong>Important:</strong> your JWT token (and thus the user information) will NOT
+contain an <code>id</code> field if you choose to  disable the <code>queryDataSource</code> option.
+This might might break code depending on the presence of an <code>id</code> field but
+is easily solved  by manually adding the <code>id</code> field to the JWT token
+(below <code>exp</code> in the code above).</p>
+<h3 id="Verify-User-Registration"><a href="#Verify-User-Registration" class="headerlink" title="Verify User Registration"></a>Verify User Registration</h3><p>To verify your setup register a new user by posting JSON data to your API using:</p>
+<ul>
+<li>URL <code>http://cake3api.app/api/users/register</code></li>
+<li><strong>HTTP Method</strong> <code>POST</code></li>
+<li><strong>Accept Header</strong> <code>application/json</code></li>
+<li><strong>Content-Type Header</strong> <code>application/json</code></li>
+<li>Body data in (absolutely) correct JSON format</li>
+</ul>
+<img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/api-request-register.png" title="API Request Headers for register action">
+<p>Should return Status Code 201 (Created) with a JSON response body containing
+the user id and JWT token similar to:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">2</span>,</span><br><span class="line">        <span class="attr">"token"</span>: <span class="string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.q2chPMiKRzwrO3v48fi90HyJPHDLOXtwEKr7EcU3GPk"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="8-Sanity-Checking-JWT-Tokens"><a href="#8-Sanity-Checking-JWT-Tokens" class="headerlink" title="8. Sanity Checking JWT Tokens"></a>8. Sanity Checking JWT Tokens</h2><p>Now that you have received your first JWT token it might be a good time to verify that your token
+is valid by:</p>
+<ul>
+<li>browsing to <a href="http://jwt.io/" target="_blank" rel="noopener">http://jwt.io/</a></li>
+<li>pasting your token in the <code>Encoded</code> field</li>
+<li>replacing the secret value with the <code>Salt</code> value found in your <code>config/app.php</code></li>
+</ul>
+<p>If things went well you should see a <strong>green</strong> success message along with the user id and JWT exp
+claim as stored in the token:</p>
+<img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/jwt-io-signature-verification.png" title="jwt.io successful signature verification">
+<h2 id="9-Implementing-JWT-Token-Requests"><a href="#9-Implementing-JWT-Token-Requests" class="headerlink" title="9. Implementing JWT Token Requests"></a>9. Implementing JWT Token Requests</h2><h3 id="How-it-works-1"><a href="#How-it-works-1" class="headerlink" title="How it works"></a>How it works</h3><p>Users can request their JWT token by JSON posting their username and password to the <code>/token</code> action
+after which AuthComponent will use FormAuthenticate (and thus not JwtAuth) to
+validate the credentials.</p>
+<p>If validation is successful a JSON 200 response (Success) will be returned with a response
+body containing the JWT token.</p>
+<img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/jwt-primer-token.png" title="JWT primer: token request">
+<h3 id="Create-the-token-action"><a href="#Create-the-token-action" class="headerlink" title="Create the /token action"></a>Create the /token action</h3><p>To implement token requests add the following <code>token()</code> method to <code>src/Controller/Api/UsersController.php</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">token</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $user = <span class="keyword">$this</span>-&gt;Auth-&gt;identify();</span><br><span class="line">    <span class="keyword">if</span> (!$user) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnauthorizedException(<span class="string">'Invalid username or password'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">$this</span>-&gt;set([</span><br><span class="line">        <span class="string">'success'</span> =&gt; <span class="keyword">true</span>,</span><br><span class="line">        <span class="string">'data'</span> =&gt; [</span><br><span class="line">            <span class="string">'token'</span> =&gt; JWT::encode([</span><br><span class="line">                <span class="string">'sub'</span> =&gt; $user[<span class="string">'id'</span>],</span><br><span class="line">                <span class="string">'exp'</span> =&gt;  time() + <span class="number">604800</span></span><br><span class="line">            ],</span><br><span class="line">            Security::salt())</span><br><span class="line">        ],</span><br><span class="line">        <span class="string">'_serialize'</span> =&gt; [<span class="string">'success'</span>, <span class="string">'data'</span>]</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Verify-Token-Request"><a href="#Verify-Token-Request" class="headerlink" title="Verify Token Request"></a>Verify Token Request</h3><p>To verify your setup try requesting a token for the newly created user by posting JSON data to your API using:</p>
+<ul>
+<li>URL <code>http://cake3api.app/api/users/token</code></li>
+<li><strong>HTTP Method</strong> <code>POST</code></li>
+<li><strong>Accept Header</strong> <code>application/json</code></li>
+<li><strong>Content-Type Header</strong> <code>application/json</code></li>
+<li>Body data with username and password in (absolutely) correct JSON format</li>
+</ul>
+<img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/api-request-token.png" title="API Request Headers for token action">
+<p>Should return Status Code 200 (Success) with a JSON response body containing
+only the JWT token similar to:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"token"</span>: <span class="string">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.q2chPMiKRzwrO3v48fi90HyJPHDLOXtwEKr7EcU3GPk"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="10-Testing-JWT-Authentication"><a href="#10-Testing-JWT-Authentication" class="headerlink" title="10. Testing JWT Authentication"></a>10. Testing JWT Authentication</h2><blockquote>
+<p><strong> Before you begin testing:</strong> please be aware that some servers (like Apache) don’t automatically 
+populate $_SERVER[‘HTTP_AUTHORIZATION’] even when the Authorization header is set. Make sure to 
+first follow <a href="https://github.com/ADmad/cakephp-jwt-auth#working" target="_blank" rel="noopener">these instructions</a>
+if the tests below are not functioning as described.</p>
+</blockquote>
+<h3 id="How-it-works-2"><a href="#How-it-works-2" class="headerlink" title="How it works"></a>How it works</h3><p>When accessing an API resource that requires authentication the JWT Plugin will look for a token
+in the <code>Authorization</code> header and will validate it using the <code>Salt</code> value used by your application.</p>
+<p>If validation is successful a JSON 200 response (Success) will be returned with application produced body.</p>
+<img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/jwt-primer-authentication.png" title="JWT primer: authentication process">
+<p><strong>Notes:</strong></p>
+<ul>
+<li>there is no need to create extra code, all JWT authentication logic is already present in the plugin</li>
+<li>the JWT Plugin also supports passing the token as a query string parameter named <code>_token</code> (not described for brevity)</li>
+<li>the <code>Authorization</code> header <strong>MUST</strong> contain a Bearer Token which is part of the OAuth V2 standard and should look like:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.q2chPMiKRzwrO3v48fi90HyJPHDLOXtwEKr7EcU3GPk</span><br></pre></td></tr></table></figure>
+<h3 id="Verify-Authenticated-Access"><a href="#Verify-Authenticated-Access" class="headerlink" title="Verify Authenticated Access"></a>Verify Authenticated Access</h3><p>To verify successful authentication is processed as expected retrieve the list of protected cocktails from your API by using:</p>
+<ul>
+<li>URL <code>http://cake3api.app/api/cocktails</code></li>
+<li><strong>HTTP Method</strong> <code>GET</code></li>
+<li><strong>Accept Header</strong> <code>application/json</code></li>
+<li><strong>Authorization Header</strong> containing <code>Bearer {YOUR-JWT-TOKEN}</code></li>
+</ul>
+<img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/api-request-authenticate.png" title="API Request Headers for resources requiring authentication">
+<p>Should return Status Code 200 (Success) with the familiar JSON cocktails response body:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"data"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Cosmopolitan"</span>,</span><br><span class="line">            <span class="attr">"description"</span>: <span class="string">"Vodka based"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Margarita"</span>,</span><br><span class="line">            <span class="attr">"description"</span>: <span class="string">"Tequila based"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">3</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Mojito"</span>,</span><br><span class="line">            <span class="attr">"description"</span>: <span class="string">"Rum based"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Verify-Unauthenticated-Access"><a href="#Verify-Unauthenticated-Access" class="headerlink" title="Verify Unauthenticated Access"></a>Verify Unauthenticated Access</h3><p>To verify unsuccessful authentication is processed as expected retrieve the list of protected cocktails
+by using the exact same query but <strong>this time removing</strong> the <code>Authorization</code> header.</p>
+<p>Should instantly return Status Code 401 (Unauthorized) with a JSON response body similar to:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"success"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"message"</span>: <span class="string">"You are not authorized to access that location."</span>,</span><br><span class="line">        <span class="attr">"url"</span>: <span class="string">"\/api\/cocktails.json"</span>,</span><br><span class="line">        <span class="attr">"code"</span>: <span class="number">401</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Additional-reading"><a href="#Additional-reading" class="headerlink" title="Additional reading"></a>Additional reading</h2><ul>
+<li>Follow-up tutorial <a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">How to make your CakePHP 3 API produce JSON API</a></li>
+<li><a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-add-jwt-authentication-to-a-cakephp-3-rest-api" target="_blank" rel="noopener">Git repository</a> with working end state application as produced by this tutorial</li>
+<li>The <a href="https://github.com/ADmad/cakephp-jwt-auth" target="_blank" rel="noopener">CakePHP JWT Plugin</a> on Github</li>
+<li>The <a href="https://github.com/firebase/php-jwt" target="_blank" rel="noopener">PHP JWT Library</a> on Github</li>
+<li>The <a href="http://book.cakephp.org/3.0/en/index.html" target="_blank" rel="noopener">CakePHP 3 Book</a> and <a href="http://api.cakephp.org/3.0/" target="_blank" rel="noopener">CakePHP 3 API</a> documentation</li>
+</ul>
+<p><em>Hat tip to CakePHP Core Developer and JWT Plugin creator <a href="https://github.com/ADmad/" target="_blank" rel="noopener">ADmad</a> for
+helping improve this tutorial.</em></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/cakephp/">CakePHP</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/security/">security</a>, <a href="/tags/cakephp/">cakephp</a>, <a href="/tags/cakephp3/">cakephp3</a>, <a href="/tags/rest/">rest</a>, <a href="/tags/api/">api</a>, <a href="/tags/jwt/">jwt</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="sponsor">
+  <h1 class="title">Support this blog</h1>
+
+  <div class="leaderboard">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- bravo-kernel-blog-leaderboard -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1161412231963156"
+         data-ad-slot="4755382371"
+         data-ad-format="auto">
+    </ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+</section>
+
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:bravo-kernel.com">
+  </form>
+</div>
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/git-wheezy/" style="font-size: 10px;">Git -   Wheezy</a> <a href="/tags/api/" style="font-size: 17.14px;">api</a> <a href="/tags/apple/" style="font-size: 10px;">apple</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cakephp/" style="font-size: 20px;">cakephp</a> <a href="/tags/cakephp3/" style="font-size: 15.71px;">cakephp3</a> <a href="/tags/cardano/" style="font-size: 10px;">cardano</a> <a href="/tags/chef/" style="font-size: 10px;">chef</a> <a href="/tags/chef-dk/" style="font-size: 10px;">chef-dk</a> <a href="/tags/cocktails/" style="font-size: 10px;">cocktails</a> <a href="/tags/composer/" style="font-size: 12.86px;">composer</a> <a href="/tags/crud/" style="font-size: 10px;">crud</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/debian/" style="font-size: 18.57px;">debian</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/dutch/" style="font-size: 10px;">dutch</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/elm/" style="font-size: 10px;">elm</a> <a href="/tags/elm-lang/" style="font-size: 10px;">elm-lang</a> <a href="/tags/ember/" style="font-size: 11.43px;">ember</a> <a href="/tags/emberjs/" style="font-size: 10px;">emberjs</a> <a href="/tags/fim/" style="font-size: 10px;">fim</a> <a href="/tags/foc/" style="font-size: 11.43px;">foc</a> <a href="/tags/foundation/" style="font-size: 10px;">foundation</a> <a href="/tags/git/" style="font-size: 17.14px;">git</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/github-actions/" style="font-size: 10px;">github-actions</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/ipad/" style="font-size: 10px;">ipad</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/json-api/" style="font-size: 10px;">json api</a> <a href="/tags/jsonapi/" style="font-size: 10px;">jsonapi</a> <a href="/tags/jwt/" style="font-size: 10px;">jwt</a> <a href="/tags/kitchen/" style="font-size: 10px;">kitchen</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/microsoft/" style="font-size: 14.29px;">microsoft</a> <a href="/tags/minecraft/" style="font-size: 11.43px;">minecraft</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/mssql/" style="font-size: 10px;">mssql</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/octopress/" style="font-size: 14.29px;">octopress</a> <a href="/tags/octostrap3/" style="font-size: 11.43px;">octostrap3</a> <a href="/tags/office/" style="font-size: 10px;">office</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/phpcs/" style="font-size: 11.43px;">phpcs</a> <a href="/tags/powershell/" style="font-size: 10px;">powershell</a> <a href="/tags/powershell-core/" style="font-size: 10px;">powershell-core</a> <a href="/tags/rest/" style="font-size: 15.71px;">rest</a> <a href="/tags/security/" style="font-size: 11.43px;">security</a> <a href="/tags/server-2012/" style="font-size: 10px;">server-2012</a> <a href="/tags/shellshock/" style="font-size: 10px;">shellshock</a> <a href="/tags/sysop/" style="font-size: 10px;">sysop</a> <a href="/tags/terminal/" style="font-size: 10px;">terminal</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/ubuntu/" style="font-size: 12.86px;">ubuntu</a> <a href="/tags/vagrant/" style="font-size: 10px;">vagrant</a> <a href="/tags/validator/" style="font-size: 11.43px;">validator</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/wheezy/" style="font-size: 14.29px;">wheezy</a> <a href="/tags/windows10/" style="font-size: 11.43px;">windows10</a> <a href="/tags/wsl/" style="font-size: 10px;">wsl</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a>
+  </div>
+</div>
+
+
+  <div class="advertisement">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- bravo-kernel-blog-270 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:270px;height:270px"
+		 data-ad-client="ca-pub-1161412231963156"
+		 data-ad-slot="9643145573"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2021 bravo-kernel
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'bravo-kernel';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Instant Nginx API key authentication for your CakePHP API | Bravo Kernel</title>
+  <meta name="author" content="bravo-kernel">
+  
+  <meta name="description" content="Instantly add rock solid API key authentication for your CakePHP
+(CRUD) API using
+nothing more than a simple Nginx configuration file:
+
+protect your A">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Instant Nginx API key authentication for your CakePHP API"/>
+  <meta property="og:site_name" content="Bravo Kernel"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Bravo Kernel" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <script data-ad-client="ca-pub-1161412231963156" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40048049-1']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Bravo Kernel</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">Feed</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-10-26T19:50:30.000Z"><a href="/2015/10/instant-nginx-api-key-authentication-for-your-cakephp-api/">Oct 26 2015</a></time>
+		
+			<span class="updated" title="Post Updated"><span>Mar 14 2018</span></span>
+        
+		<div class="github-improve"><a target="_blank" rel="noopener" href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-10-26-instant-nginx-api-key-authentication-for-your-cakephp-api.md">Improve on Github</a></div>
+      
+      
+  
+    <h1 class="title">Instant Nginx API key authentication for your CakePHP API</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Instantly add rock solid API key authentication for your CakePHP
+(<a href="https://github.com/FriendsOfCake/crud" target="_blank" rel="noopener">CRUD</a>) API using
+nothing more than a simple Nginx configuration file:</p>
+<ul>
+<li>protect your API before even coding</li>
+<li>no code, no overhead</li>
+<li>json error response consistent with the <a href="http://crud.readthedocs.org/en/latest/listeners/api.html#id1" target="_blank" rel="noopener">FriendsOfCake API Listener</a> or JSONAPI</li>
+<li>manual API key updating and revocation</li>
+<li>replace with a “proper” solution when you’re ready</li>
+</ul>
+<h2 id="1-Creating-the-nginx-conf-file"><a href="#1-Creating-the-nginx-conf-file" class="headerlink" title="1. Creating the nginx conf file"></a>1. Creating the nginx conf file</h2><p>Create new file <code>/etc/nginx/api_keys.conf</code> with the following content:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># define boolean</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$valid</span> 0;</span><br><span class="line"></span><br><span class="line"><span class="comment"># bravo-kernel's key</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$http_apikey</span> = <span class="string">'abcdefg123456'</span>) &#123;</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$valid</span> 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># mikey's key</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$http_apikey</span> = <span class="string">'1234567890'</span>) &#123;</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$valid</span> 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># throw 403 with CakePHP Crud compatible JSON error response if no key match was made</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$valid</span> = 0) &#123;</span><br><span class="line">    add_header <span class="string">'Content-Type'</span> <span class="string">'application/json;charset=UTF-8'</span> always;</span><br><span class="line">    <span class="built_in">return</span> 403 <span class="string">'&#123;"success": false, "data":&#123;"message":"Invalid API Key", "url": "$request_uri", "code":403&#125;&#125;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>If you prefer JSONAPI simply replace the <code>$valid</code> condition above with:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># Throw 403 with JSONAPI error response if no key match was made</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$valid</span> = 0) &#123;</span><br><span class="line">	add_header <span class="string">'Content-Type'</span> <span class="string">'application/vnd.api+json;charset=UTF-8'</span> always;</span><br><span class="line">	add_header <span class="string">'Access-Control-Allow-Origin'</span> <span class="string">'*'</span> always;</span><br><span class="line">	<span class="built_in">return</span> 403 <span class="string">'&#123;"errors": [&#123; "status": "403", "source": &#123; "pointer": "$request_uri" &#125;, "title":  "Forbidden", "detail": "Invalid API key" &#125;]&#125;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The above:</p>
+<ul>
+<li>will check all connections for the presence of an <code>apikey</code> header</li>
+<li>will do nothing if a matching apikey is found, otherwise:<ul>
+<li>throws a 403 error</li>
+<li>produces a JSON  error response body in either JSONAPI or 
+<a href="http://crud.readthedocs.org/en/latest/listeners/api.html#id1" target="_blank" rel="noopener">FoC API Listener</a>
+compatible format</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Do NOT use underscores in your custom header (key) names <a href="http://stackoverflow.com/questions/22856136/why-underscores-are-forbidden-in-http-header-names" target="_blank" rel="noopener">as nginx
+will remove them by default</a>.</p>
+</blockquote>
+<h2 id="2-Enabling-API-key-protection"><a href="#2-Enabling-API-key-protection" class="headerlink" title="2. Enabling API key protection"></a>2. Enabling API key protection</h2><p>To enable API key protection for your virtual host:</p>
+<ol>
+<li><p>Open your nginx vhost file</p>
+</li>
+<li><p>Add the following line directly below the <code>~ \.php</code> location</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include /etc/nginx/api_keys.conf;</span><br></pre></td></tr></table></figure>
+<p> So your configuration will look similar to:</p>
+ <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> <span class="regexp">~ \.php$</span> &#123;</span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/api_keys.conf;</span><br><span class="line">    <span class="attribute">try_files</span> <span class="variable">$uri</span> =<span class="number">404</span>;</span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/fastcgi_params;</span><br><span class="line">    <span class="attribute">fastcgi_pass</span>    unix:/var/run/php5-fpm.sock;</span><br><span class="line">    <span class="attribute">fastcgi_index</span>   index.php;</span><br><span class="line">    <span class="attribute">fastcgi_param</span> SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Please note that will ONLY protect your php served files. To protect
+e.g. static html folders simply include the <code>api_keys.conf</code> in those
+locations as well. </p>
+</blockquote>
+</li>
+<li><p>Restart nginx to effectuate the changes:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service nginx restart</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="3-Testing-your-setup"><a href="#3-Testing-your-setup" class="headerlink" title="3. Testing your setup"></a>3. Testing your setup</h2><ol>
+<li><p>Open a configurable REST client like <a href="https://www.getpostman.com/" target="_blank" rel="noopener">the Postman plugin</a> for Chrome.</p>
+</li>
+<li><p>Try to access one of your API resources</p>
+</li>
+<li><p>You should see a json (403) error response similar to the one below proving:</p>
+<ul>
+<li>your API resources are no longer accessible without a valid API key</li>
+<li><p>Nginx is serving json similar to the CRUD plugin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;success&quot;: false,</span><br><span class="line">  &quot;data&quot;: &#123;</span><br><span class="line">    &quot;message&quot;: &quot;Invalid API Key&quot;,</span><br><span class="line">    &quot;url&quot;: &quot;/cocktails&quot;,</span><br><span class="line">    &quot;code&quot;: 403</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Now add a custom header named <code>apikey</code> and value <code>1234567890</code></p>
+</li>
+<li><p>Try accessing the same resource</p>
+</li>
+<li><p>If things went well you should a familiar CakePHP success response (200)
+containing your API resources in the json body.</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/cakephp/">cakephp</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/cakephp/">cakephp</a>, <a href="/tags/foc/">foc</a>, <a href="/tags/nginx/">nginx</a>, <a href="/tags/api/">api</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="sponsor">
+  <h1 class="title">Support this blog</h1>
+
+  <div class="leaderboard">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- bravo-kernel-blog-leaderboard -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1161412231963156"
+         data-ad-slot="4755382371"
+         data-ad-format="auto">
+    </ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+</section>
+
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:bravo-kernel.com">
+  </form>
+</div>
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/git-wheezy/" style="font-size: 10px;">Git -   Wheezy</a> <a href="/tags/api/" style="font-size: 17.14px;">api</a> <a href="/tags/apple/" style="font-size: 10px;">apple</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cakephp/" style="font-size: 20px;">cakephp</a> <a href="/tags/cakephp3/" style="font-size: 15.71px;">cakephp3</a> <a href="/tags/cardano/" style="font-size: 10px;">cardano</a> <a href="/tags/chef/" style="font-size: 10px;">chef</a> <a href="/tags/chef-dk/" style="font-size: 10px;">chef-dk</a> <a href="/tags/cocktails/" style="font-size: 10px;">cocktails</a> <a href="/tags/composer/" style="font-size: 12.86px;">composer</a> <a href="/tags/crud/" style="font-size: 10px;">crud</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/debian/" style="font-size: 18.57px;">debian</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/dutch/" style="font-size: 10px;">dutch</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/elm/" style="font-size: 10px;">elm</a> <a href="/tags/elm-lang/" style="font-size: 10px;">elm-lang</a> <a href="/tags/ember/" style="font-size: 11.43px;">ember</a> <a href="/tags/emberjs/" style="font-size: 10px;">emberjs</a> <a href="/tags/fim/" style="font-size: 10px;">fim</a> <a href="/tags/foc/" style="font-size: 11.43px;">foc</a> <a href="/tags/foundation/" style="font-size: 10px;">foundation</a> <a href="/tags/git/" style="font-size: 17.14px;">git</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/github-actions/" style="font-size: 10px;">github-actions</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/ipad/" style="font-size: 10px;">ipad</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/json-api/" style="font-size: 10px;">json api</a> <a href="/tags/jsonapi/" style="font-size: 10px;">jsonapi</a> <a href="/tags/jwt/" style="font-size: 10px;">jwt</a> <a href="/tags/kitchen/" style="font-size: 10px;">kitchen</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/microsoft/" style="font-size: 14.29px;">microsoft</a> <a href="/tags/minecraft/" style="font-size: 11.43px;">minecraft</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/mssql/" style="font-size: 10px;">mssql</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/octopress/" style="font-size: 14.29px;">octopress</a> <a href="/tags/octostrap3/" style="font-size: 11.43px;">octostrap3</a> <a href="/tags/office/" style="font-size: 10px;">office</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/phpcs/" style="font-size: 11.43px;">phpcs</a> <a href="/tags/powershell/" style="font-size: 10px;">powershell</a> <a href="/tags/powershell-core/" style="font-size: 10px;">powershell-core</a> <a href="/tags/rest/" style="font-size: 15.71px;">rest</a> <a href="/tags/security/" style="font-size: 11.43px;">security</a> <a href="/tags/server-2012/" style="font-size: 10px;">server-2012</a> <a href="/tags/shellshock/" style="font-size: 10px;">shellshock</a> <a href="/tags/sysop/" style="font-size: 10px;">sysop</a> <a href="/tags/terminal/" style="font-size: 10px;">terminal</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/ubuntu/" style="font-size: 12.86px;">ubuntu</a> <a href="/tags/vagrant/" style="font-size: 10px;">vagrant</a> <a href="/tags/validator/" style="font-size: 11.43px;">validator</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/wheezy/" style="font-size: 14.29px;">wheezy</a> <a href="/tags/windows10/" style="font-size: 11.43px;">windows10</a> <a href="/tags/wsl/" style="font-size: 10px;">wsl</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a>
+  </div>
+</div>
+
+
+  <div class="advertisement">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- bravo-kernel-blog-270 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:270px;height:270px"
+		 data-ad-client="ca-pub-1161412231963156"
+		 data-ad-slot="9643145573"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2021 bravo-kernel
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'bravo-kernel';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>How to use a CakePHP API as the data backend for Ember in 30 minutes | Bravo Kernel</title>
+  <meta name="author" content="bravo-kernel">
+  
+  <meta name="description" content="In this follow-up post to How to make your CakePHP 3 API produce JSON API
+we will show you how easy it is to use your CakePHP API as the backend for a">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="How to use a CakePHP API as the data backend for Ember in 30 minutes"/>
+  <meta property="og:site_name" content="Bravo Kernel"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Bravo Kernel" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <script data-ad-client="ca-pub-1161412231963156" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40048049-1']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Bravo Kernel</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">Feed</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2017-03-13T17:00:00.000Z"><a href="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/">Mar 13 2017</a></time>
+		
+			<span class="updated" title="Post Updated"><span>Mar 24 2018</span></span>
+        
+		<div class="github-improve"><a target="_blank" rel="noopener" href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2017-03-13-how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes.md">Improve on Github</a></div>
+      
+      
+  
+    <h1 class="title">How to use a CakePHP API as the data backend for Ember in 30 minutes</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>In this follow-up post to <a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">How to make your CakePHP 3 API produce JSON API</a>
+we will show you how easy it is to use your CakePHP API as the backend for an <a href="http://emberjs.com/" target="_blank" rel="noopener">Ember</a>
+application, allowing you to keep benefiting from the extremely powerful
+<a href="https://book.cakephp.org/3.0/en/orm.html" target="_blank" rel="noopener">CakePHP ORM</a>
+whilst also enjoying all the frontend-goodies provided by Ember.</p>
+<p>The tutorial:</p>
+<ul>
+<li>provides step-by-step instructions</li>
+<li>ends with a full CRUD implementation</li>
+<li>adds background information to help you understand the underlying concepts</li>
+</ul>
+<h2 id="CakePHP-Users"><a href="#CakePHP-Users" class="headerlink" title="CakePHP Users"></a>CakePHP Users</h2><p>Even though this tutorial does not touch a single piece of PHP code the learning
+curve should be minimal since both frameworks share a lot of characteristics:</p>
+<ul>
+<li>Convention over configuration</li>
+<li>A stack of proven tools that “just work”</li>
+<li>Command line tools for baking/generating code</li>
+<li>Rapid Development; getting productive, very fast</li>
+<li>Highly maintainable, painless upgrades</li>
+<li>Suitable for both small and ambitous applications</li>
+</ul>
+<h2 id="Before-We-Begin"><a href="#Before-We-Begin" class="headerlink" title="Before We Begin"></a>Before We Begin</h2><p>This is part six of the CakePHP 3 REST API tutorial series:</p>
+<ol>
+<li><a href="/2015/04/how-to-build-a-cakephp-3-rest-api-in-minutes/">How to build a CakePHP 3 REST API in minutes</a></li>
+<li><a href="http://cakebox:4000/2015/04/how-to-use-a-cakephp-3-rest-api/" target="_blank" rel="noopener">How to use a CakePHP 3 REST API</a></li>
+<li><a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">How to prefix route a CakePHP 3 REST API</a></li>
+<li><a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a></li>
+<li><a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">How to make your CakePHP 3 API produce JSON API</a></li>
+<li>How to create an Ember application with (CakePHP) JSON API backend in 30 minutes</li>
+</ol>
+<p>Before starting this tutorial <strong>make absolutely sure</strong>:</p>
+<ul>
+<li>that you have the <code>cake3api.app</code> API up-and-running</li>
+<li>that it is producing valid JSON API</li>
+<li>that it is allowing CORS requests</li>
+</ul>
+<p>You may create the API by either:</p>
+<ul>
+<li>completing <a href="2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">the previous tutorial</a></li>
+<li>starting fresh by using these
+<a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-make-your-cakephp-3-api-produce-jsonapi" target="_blank" rel="noopener">end-state application sources</a>,
+composer installing and running the database migration.</li>
+</ul>
+<h2 id="Assumptions"><a href="#Assumptions" class="headerlink" title="Assumptions"></a>Assumptions</h2><p>This tutorial assumes:</p>
+<ul>
+<li>the hostname serving your Ember application is <a href="https://github.com/alt3/cakebox" target="_blank" rel="noopener">cakebox</a> (replace with your own system name where applicable)</li>
+<li>the FQDN of your API is <code>cake3api.app</code> (replace with your own FQDN where applicable)</li>
+<li>Chrome with the <a href="https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi" target="_blank" rel="noopener">Ember Inspector add-on</a> as your client browser</li>
+</ul>
+<h2 id="1-TLDR-just-give-me-the-Ember-end-state-source-files"><a href="#1-TLDR-just-give-me-the-Ember-end-state-source-files" class="headerlink" title="1. TLDR; just give me the Ember end-state source files"></a>1. TLDR; just give me the Ember end-state source files</h2><p>Novice users should skip this step.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/bravo-kernel/application-examples</span><br><span class="line"><span class="built_in">cd</span> application-examples</span><br><span class="line"><span class="built_in">cd</span> blog-how-to-use<span class="_">-a</span>-cakephp-api-as-the-data-backend-for-ember-in-30-minutes</span><br><span class="line">npm install</span><br><span class="line">ember serve</span><br></pre></td></tr></table></figure>
+<p>Browse to <code>http://cakebox:4200</code></p>
+<h2 id="2-Requirements"><a href="#2-Requirements" class="headerlink" title="2. Requirements"></a>2. Requirements</h2><p>This tutorial requires the installation of
+<a href="https://nodejs.org/en/" target="_blank" rel="noopener">nodejs</a>,
+<a href="https://ember-cli.com/" target="_blank" rel="noopener">ember-cli</a>,
+<a href="http://phantomjs.org/" target="_blank" rel="noopener">phantomjs</a>,
+and
+<a href="https://bower.io/" target="_blank" rel="noopener">bower</a> on your server.</p>
+<p>Since every system will have different requirements you should consider the following
+instructions (taken from an installation on <a href="https://github.com/alt3/cakebox" target="_blank" rel="noopener">cakebox</a>
+using Ubuntu 14.04) as nothing more than an example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install nodejs</span><br><span class="line">npm install -g ember-cli</span><br><span class="line">npm install -g phantomjs</span><br><span class="line">npm install -g bower</span><br></pre></td></tr></table></figure>
+<h2 id="3-Creating-the-Ember-application"><a href="#3-Creating-the-Ember-application" class="headerlink" title="3. Creating the Ember application"></a>3. Creating the Ember application</h2><p>Ember comes with the <code>ember</code> CLI command which is similar to CakePHP’s <code>cake</code> and used
+to generate applications, routes, models, etc. We will generate a fresh Ember application
+named <code>ember-frontend</code> by running:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/your/projects/directory</span><br><span class="line">ember new ember-frontend</span><br><span class="line"><span class="built_in">cd</span> ember-frontend</span><br></pre></td></tr></table></figure>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/01-ember-cli-new-application.png" title="Screenshot of ember-cli generating the Ember application">
+<h2 id="4-Meeting-Ember"><a href="#4-Meeting-Ember" class="headerlink" title="4. Meeting Ember"></a>4. Meeting Ember</h2><p>Since this is basically all that is needed to create a new Ember application this might be a good moment
+to take a quick look at the files and folders to get a quick first impression of the application structure.</p>
+<p>To see your Ember application in action run <code>ember serve</code> and browse to <code>http://cakebox:4200</code>:</p>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/02-ember-welcome-page.png" title="Screenshot of Ember welcome page">
+<p>To continue this tutorial without the Tomster mascotte
+open <code>templates/application.hbs</code> and remove the following line:</p>
+<pre><code>{{welcome-page}}
+</code></pre><h2 id="5-Creating-the-Ember-Data-Adapter"><a href="#5-Creating-the-Ember-Data-Adapter" class="headerlink" title="5. Creating the Ember Data Adapter"></a>5. Creating the Ember Data Adapter</h2><p>Ember Data’s (now default) <a href="http://emberjs.com/api/data/classes/DS.JSONAPIAdapter.html" target="_blank" rel="noopener">JSONAPIAdapter</a>
+is the awesome/amazing glue responsible for automatically constructing all
+JSON API calls required to communicate with your API backend. Generate it by running:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ember generate adapter application</span><br></pre></td></tr></table></figure>
+<p>Now open <code>app/adapters/application.js</code> and add the connection settings pointing to your API
+so it looks like this:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> DS <span class="keyword">from</span> <span class="string">'ember-data'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> DS.JSONAPIAdapter.extend(&#123;</span><br><span class="line">  host: <span class="string">"http://cake3api.app"</span>,</span><br><span class="line">  namespace: <span class="string">"api"</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><em>Please note that we MUST set the namespace here because we created a CakePHP prefixed route in <a href="http://www.bravo-kernel.com/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/" target="_blank" rel="noopener">tutorial #3</a></em></p>
+<h2 id="6-Creating-the-Ember-models"><a href="#6-Creating-the-Ember-models" class="headerlink" title="6. Creating the Ember models"></a>6. Creating the Ember models</h2><p>Ember Data must somehow be made aware of the models/resources available in our CakePHP API
+(and their relationships) and amazingly enough all that is required for that to happen is
+generating an “Ember model”.</p>
+<p>Since our API is serving cocktails we create a corresponding Ember model by running:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ember generate model cocktail</span><br></pre></td></tr></table></figure>
+<p>Now open <code>app/models/coctkail.js</code> and specify which attributes you want to be available in the frontend:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> DS <span class="keyword">from</span> <span class="string">'ember-data'</span>;</span><br><span class="line"><span class="keyword">import</span> attr <span class="keyword">from</span> <span class="string">'ember-data/attr'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> DS.Model.extend(&#123;</span><br><span class="line">  name: attr(),</span><br><span class="line">  description: attr(),</span><br><span class="line">  created: attr(),</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><em>Do not forget to add <code>ember-data/attr</code></em></p>
+<h2 id="7-Adding-the-index-route"><a href="#7-Adding-the-index-route" class="headerlink" title="7. Adding the index route"></a>7. Adding the index route</h2><p>To start with Ember uses “routes” which are comparable with CakePHP controllers
+and <a href="http://handlebarsjs.com/" target="_blank" rel="noopener">Handlebars</a> “templates” which are comparable with
+CakePHP templates. To generate the route we will use to hook into our API’s <code>index</code>
+action we run:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ember generate route cocktails/index</span><br></pre></td></tr></table></figure>
+<p>This will:</p>
+<ul>
+<li>create <code>app/routes/cocktails/index.js</code></li>
+<li>create <code>app/templates/cocktails/index.hbs</code></li>
+<li>update <code>app/router.js</code> to include the newly generated route</li>
+</ul>
+<p>Now open <code>app/routes/cocktails/index.js</code> and add our model so <strong>all</strong> cocktail data is
+automatically fetched from our API when accessing this route/page.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Ember <span class="keyword">from</span> <span class="string">'ember'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Ember.Route.extend(&#123;</span><br><span class="line">  model() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.store.findAll(<span class="string">'cocktail'</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>All that is needed now is updating the template so it will show the
+fetched data so let’s update <code>app/templates/cocktails/index.js</code> and make
+it look like this:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>Ember Data JSONAPIAdapter - Index route<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  &#123;&#123;#each model as |cocktail|&#125;&#125;</span><br><span class="line">      <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;&#123;cocktail.id&#125;&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;&#123;cocktail.name&#125;&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;&#123;cocktail.description&#125;&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;&#123;cocktail.created&#125;&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">  &#123;&#123;/each&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Done, seriously.</p>
+<h3 id="Verify"><a href="#Verify" class="headerlink" title="Verify"></a>Verify</h3><p>Now that you have created your first API-driven page verify Ember is actually fetching from your API:</p>
+<ul>
+<li>open Chrome</li>
+<li>browse to your Ember application at <code>cakebox:4200/cocktails</code></li>
+<li>make sure it displays the records as found in your CakePHP database:</li>
+</ul>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/03-ember-showing-data-from-cakephp-api-index-action.png" title="Ember showing data fetched from CakePHP API">
+<h2 id="8-Using-Ember-Inspector"><a href="#8-Using-Ember-Inspector" class="headerlink" title="8. Using Ember Inspector"></a>8. Using Ember Inspector</h2><p>The Ember Inspector in Chrome will help you get a better understanding of the underlying
+API magic so let’s zoom in on that subject before continuing.</p>
+<h3 id="Inspecting-API-Resources"><a href="#Inspecting-API-Resources" class="headerlink" title="Inspecting API Resources"></a>Inspecting API Resources</h3><p>The API resources used by your Ember frontend can be found by:</p>
+<ul>
+<li>opening chrome</li>
+<li>pressing F12</li>
+<li>selecting the <code>Network</code> tab</li>
+<li>browsing to <code>cakebox:4200/cocktails</code></li>
+</ul>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/04-ember-inspector-network.png" title="Ember Inspector API network resource">
+<ul>
+<li><strong>upper arrow</strong>: tells us that a network resource named <code>cocktails</code> was fetched
+using jquery (executed by Ember Data)</li>
+<li><strong>lower arrow</strong>: tells us Ember Inspector is recognizing the page as valid Ember</li>
+</ul>
+<h3 id="Inspecting-API-Resource-Headers"><a href="#Inspecting-API-Resource-Headers" class="headerlink" title="Inspecting API Resource Headers"></a>Inspecting API Resource Headers</h3><p>To zoom in on the API resource and inspect the headers simply click <code>cocktails</code> which
+should give you something like:</p>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/05-ember-inspector-api-resource-zoom-headers.png" title="Ember Inspector zoom in on API network resource headers">
+<ul>
+<li><strong>upper arrow</strong>: proves the resource is fetched from our CakePHP API</li>
+<li><strong>center arrow</strong>: tells us the CakePHP API is responding with JSON API</li>
+<li><strong>lower arrow</strong>: tells us Ember Data is automatically sending the JSON API Accept Header with all requests</li>
+</ul>
+<h3 id="Inspecting-the-API-response"><a href="#Inspecting-the-API-response" class="headerlink" title="Inspecting the API response"></a>Inspecting the API response</h3><p>You will be able to see the JSON API response produced by the API by clicking
+the <code>Response</code> tab. This should look more than familiar since you have implemented
+JSON API during the previous tutorial (pretty cool).</p>
+<p><em>FYI the <code>Preview</code> tab will show the exact same results but objectied for easy click-through.</em></p>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/06-ember-inspector-api-resource-response.png" title="Ember Inspector show API response">
+<h3 id="Inspecting-Ember-Data-records"><a href="#Inspecting-Ember-Data-records" class="headerlink" title="Inspecting Ember Data records"></a>Inspecting Ember Data records</h3><p>The Ember Inspector is really useful when we want to see how our
+API data is being used by Ember. To make this more clear:</p>
+<ul>
+<li>select the <code>Ember</code> tab</li>
+<li>select the <code>Data</code> container</li>
+<li>select the <code>cocktail</code> model type</li>
+</ul>
+<p>You should notice two things:</p>
+<ul>
+<li>the attributes are corresponding to the Ember <code>cocktail</code> model we created earlier</li>
+<li>and are thus missing the <code>modified</code> attribute we excluded (even though our API is servicing it)</li>
+</ul>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/07-ember-inspector-api-data-main.png" title="Ember Inspector Ember Data main">
+<h3 id="Inspecting-Ember-Data-record-details"><a href="#Inspecting-Ember-Data-record-details" class="headerlink" title="Inspecting Ember Data record details"></a>Inspecting Ember Data record details</h3><p>Every record contains very detailed information which is revealed when clicking a record.</p>
+<p><em>Relationship information (<code>belongsTo</code>, <code>hasMany</code>) will appear in the <code>Flags</code> section when applicable.</em></p>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/08-ember-inspector-api-record-details.png" title="Ember Inspector Ember Data record details">
+<h2 id="9-Adding-the-delete-action"><a href="#9-Adding-the-delete-action" class="headerlink" title="9. Adding the delete action"></a>9. Adding the delete action</h2><p>Ember uses <a href="https://guides.emberjs.com/v1.13.0/templates/actions/" target="_blank" rel="noopener">template actions</a>
+to let users interact with data so let’s add one
+that will automatically construct and send the correct <code>DELETE</code> request
+to our API.</p>
+<p>Moment, since all template actions require a corresponding (named) event in the routes file
+first open <code>app/routes/cocktails/index.js</code> and update it to look like this:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Ember <span class="keyword">from</span> <span class="string">'ember'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Ember.Route.extend(&#123;</span><br><span class="line">  model() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.store.findAll(<span class="string">'cocktail'</span>);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  actions: &#123;</span><br><span class="line">    deleteCocktail(cocktail) &#123;</span><br><span class="line">      <span class="keyword">let</span> confirmation = confirm(<span class="string">'Are you sure?'</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (confirmation) &#123;</span><br><span class="line">        cocktail.destroyRecord();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Now that the <code>deleteCocktail</code> event/action is in place all that is left to do is updating
+the index template with a button so users can trigger the action. To do so, open <code>templates/cocktails/index.hbs</code>
+and update it to look like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;h3&gt;Ember showing data fetched from CakePHP API&apos;s index action&lt;/h3&gt;</span><br><span class="line">&lt;table&gt;</span><br><span class="line">  &#123;&#123;#each model as |cocktail|&#125;&#125;</span><br><span class="line">      &lt;tr&gt;</span><br><span class="line">          &lt;td&gt;&#123;&#123;cocktail.id&#125;&#125;&lt;/td&gt;</span><br><span class="line">          &lt;td&gt;&#123;&#123;cocktail.name&#125;&#125;&lt;/td&gt;</span><br><span class="line">          &lt;td&gt;&#123;&#123;cocktail.description&#125;&#125;&lt;/td&gt;</span><br><span class="line">          &lt;td&gt;&#123;&#123;cocktail.created&#125;&#125;&lt;/td&gt;</span><br><span class="line">          &lt;td&gt;&lt;button class=&quot;button&quot; &#123;&#123;action &apos;deleteCocktail&apos; cocktail&#125;&#125;&gt;Delete&lt;/button&gt;&lt;/td&gt;</span><br><span class="line">      &lt;/tr&gt;</span><br><span class="line">  &#123;&#123;/each&#125;&#125;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Verify-1"><a href="#Verify-1" class="headerlink" title="Verify"></a>Verify</h3><p>Verify you are able to delete records in your API by using the Ember page by:</p>
+<ul>
+<li>opening Chrome</li>
+<li>pressing F12</li>
+<li>selecting the <code>Network</code> tab</li>
+<li>browsing to your Ember application at <code>cakebox:4200/cocktails</code></li>
+<li>making sure it now displays <code>Delete</code> buttons</li>
+<li>pressing one of the <code>Delete</code> buttons (and confirming the delete)</li>
+</ul>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/09-delete-action-page.png" title="Ember delete action page">
+<p>If things went well:</p>
+<ul>
+<li>Ember automagically made two requests to your API (see the Chrome <code>Network</code> tab):<ul>
+<li>one for the CORS <code>OPTIONS</code></li>
+<li>one for the actual <code>DELETE</code></li>
+</ul>
+</li>
+<li>clicking those requests should now produce information that makes sense to you</li>
+<li>the record was deleted from your CakePHP database</li>
+<li>refreshing the page should no longer show the deleted record</li>
+<li>you should by now be quite impressed with how easy that actually was</li>
+</ul>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/10-delete-action-two-requests.png" title="Ember delete action two requests">
+<h2 id="10-Adding-the-add-action"><a href="#10-Adding-the-add-action" class="headerlink" title="10. Adding the add action"></a>10. Adding the add action</h2><p>Without going into details we will create an
+<a href="https://guides.emberjs.com/v2.11.0/tutorial/subroutes/#toc-toggle" target="_blank" rel="noopener">Ember nested route</a>
+to create a dedicated page for our <code>add</code> action by running:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ember generate route cocktails/add</span><br></pre></td></tr></table></figure>
+<p>This will:</p>
+<ul>
+<li>create <code>app/routes/cocktails/add.js</code></li>
+<li>create <code>app/templates/cocktails/add.hbs</code></li>
+<li>add the nested route to <code>router/router.js</code></li>
+</ul>
+<p>Similar to the <code>delete</code> action we will first create a named event
+so update <code>app/routes/cocktails/add.js</code> to look like this:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Ember <span class="keyword">from</span> <span class="string">'ember'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Ember.Route.extend(&#123;</span><br><span class="line">  model() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.store.createRecord(<span class="string">'cocktail'</span>);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  actions: &#123;</span><br><span class="line">    addCocktail(cocktail) &#123;</span><br><span class="line">      <span class="keyword">let</span> confirmation = confirm(<span class="string">'Are you sure?'</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (confirmation) &#123;</span><br><span class="line">        cocktail.save();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Open <code>app/templates/cocktails/add.hbs</code> and add this basic form
+the user will use to trigger the <code>addCocktail</code> action:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>New Cocktail:<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">label</span>&gt;</span>Name: &#123;&#123;input value=model.name&#125;&#125; <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">label</span>&gt;</span>Description: &#123;&#123;input value=model.description&#125;&#125; <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button"</span> &#123;&#123;<span class="attr">action</span> '<span class="attr">addCocktail</span>' <span class="attr">model</span>&#125;&#125;&gt;</span>Add<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Verify-2"><a href="#Verify-2" class="headerlink" title="Verify"></a>Verify</h3><p>Verify you can add a new record to your CakePHP database using your
+Ember frontend by:</p>
+<ul>
+<li>browsing to <code>cakebox:4200/cocktails/add</code></li>
+<li>making sure the input fields are there</li>
+<li>filling the form fields <code>name</code> and <code>description</code></li>
+<li>pressing the <code>Add</code> button</li>
+</ul>
+<p>If things went well:</p>
+<ul>
+<li>Ember automagically made two requests to your API (see the Chrome <code>Network</code> tab):<ul>
+<li>one for the CORS <code>OPTIONS</code></li>
+<li>one for the actual <code>POST</code> request</li>
+</ul>
+</li>
+<li>you should be able to see the new record in your CakePHP database</li>
+</ul>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/11-add-action-page.png" title="Screenshot of Ember add action page">
+<h2 id="11-Adding-the-view-edit-actions"><a href="#11-Adding-the-view-edit-actions" class="headerlink" title="11. Adding the view/edit actions"></a>11. Adding the view/edit actions</h2><p>Almost there.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ember generate route cocktails/edit</span><br></pre></td></tr></table></figure>
+<p>Update <code>app/routes/cocktails/edit.js</code> so it looks like this:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Ember <span class="keyword">from</span> <span class="string">'ember'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Ember.Route.extend(&#123;</span><br><span class="line">  model(params) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.get(<span class="string">'store'</span>).findRecord(<span class="string">'cocktail'</span>, params.id);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  actions: &#123;</span><br><span class="line">    saveCocktail(country) &#123;</span><br><span class="line">      <span class="keyword">let</span> confirmation = confirm(<span class="string">'Are you sure?'</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (confirmation) &#123;</span><br><span class="line">        country.save();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>To handle the <code>id</code> parameter open <code>app/router.js</code> and replace
+<code>this.route(&#39;edit&#39;);</code> with:</p>
+<pre><code>this.route(&apos;edit&apos;, { path: &quot;/edit/:id&quot; });
+</code></pre><p>Update <code>app/templates/cocktails/edit.hbs</code> so it looks like this:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>Edit existing Cocktail (id = &#123;&#123;model.id&#125;&#125;)<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;&#123;input value=model.name&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;&#123;input value=model.description&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button alert small"</span> &#123;&#123;<span class="attr">action</span> '<span class="attr">saveCocktail</span>' <span class="attr">model</span>&#125;&#125;&gt;</span>Save<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>All done, browse to <code>http://cakebox:4200/cocktails/edit/3</code> and verify that you can
+view, edit and save the record.</p>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/12-view-edit-action-page.png" title="Screenshot of Ember view/edit action page">
+<h2 id="Bonus-Relational-Data"><a href="#Bonus-Relational-Data" class="headerlink" title="Bonus: Relational Data"></a>Bonus: Relational Data</h2><p>For simplicity’s sake we did not touch the subject in this tutorial but… Ember Data will
+also (automatically) detect and handle your API’s <code>belongsTo</code> and <code>hasMany</code> relationships
+as can seen in the following screenshot:</p>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/13-relationships.png" title="Screenshot of Ember data relationships">
+<p>Please consult the Ember documentation for more information but enabling the
+above relationships was as easy as adding them to the
+Ember model like this:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> DS.Model.extend(&#123;</span><br><span class="line">  name: attr(),</span><br><span class="line">  code: attr(),</span><br><span class="line">  native: attr(),</span><br><span class="line">  currency: belongsTo(<span class="string">'currency'</span>),</span><br><span class="line">  cultures: hasMany(<span class="string">'culture'</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="Bonus-Validation-Errors"><a href="#Bonus-Validation-Errors" class="headerlink" title="Bonus: Validation Errors"></a>Bonus: Validation Errors</h2><p>Because your CakePHP API is producing JSON API compatible (validation)
+errors… those are handled by Ember Data automatically as well, making
+them instantly availble in your frontend as can be seen in the
+screenshot below where:</p>
+<ul>
+<li>your API is returning the 422 validation error along with validation error messages</li>
+<li>Ember Data picks up the validation messages and makes them avaible for display on the page</li>
+</ul>
+<img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/14-validation-errors.png" title="Screenshot of Ember data validation errors">
+<h2 id="Getting-help"><a href="#Getting-help" class="headerlink" title="Getting help"></a>Getting help</h2><p>Both CakePHP and Ember have very friendly online communities that are more than willing to help
+you out if you encounter any problems so make sure to join:</p>
+<ul>
+<li>the <a href="https://www.google.nl/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwivsN6Kq9TSAhVDExoKHTFXDuMQFggaMAA&amp;url=https%3A%2F%2Fcakesf.herokuapp.com%2F&amp;usg=AFQjCNF2de5Mi16W0okJJ9lsgy9JrDmiNQ&amp;bvm=bv.149397726,d.d2s" target="_blank" rel="noopener">CakePHP Slack group</a> or their
+<a href="https://kiwiirc.com/client/irc.freenode.net#cakephp" target="_blank" rel="noopener">#cakephp IRC channel</a></li>
+<li>the <a href="https://embercommunity.slack.com/" target="_blank" rel="noopener">Ember Slack group</a> or their <a href="https://kiwiirc.com/client/irc.freenode.net#emberjs" target="_blank" rel="noopener">#emberjs IRC channel</a></li>
+</ul>
+<h2 id="Additional-reading"><a href="#Additional-reading" class="headerlink" title="Additional reading"></a>Additional reading</h2><ul>
+<li><a href="https://guides.emberjs.com/" target="_blank" rel="noopener">Ember.js - Guides and Tutorials</a></li>
+<li><a href="http://voidcanvas.com/prefer-ember-js-angular-react-js/" target="_blank" rel="noopener">Why I prefer Ember.js over Angular &amp; React.js</a></li>
+</ul>
+<p><em>Eternal hat-tip to <a href="https://github.com/Phally" target="_blank" rel="noopener">Phally</a> for inspiring (and actually prototyping) this many years ago.</em></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/cakephp/">cakephp</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/cakephp/">cakephp</a>, <a href="/tags/api/">api</a>, <a href="/tags/ember/">ember</a>, <a href="/tags/emberjs/">emberjs</a>, <a href="/tags/jsonapi/">jsonapi</a>, <a href="/tags/crud/">crud</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="sponsor">
+  <h1 class="title">Support this blog</h1>
+
+  <div class="leaderboard">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- bravo-kernel-blog-leaderboard -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1161412231963156"
+         data-ad-slot="4755382371"
+         data-ad-format="auto">
+    </ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+</section>
+
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:bravo-kernel.com">
+  </form>
+</div>
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/git-wheezy/" style="font-size: 10px;">Git -   Wheezy</a> <a href="/tags/api/" style="font-size: 17.14px;">api</a> <a href="/tags/apple/" style="font-size: 10px;">apple</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cakephp/" style="font-size: 20px;">cakephp</a> <a href="/tags/cakephp3/" style="font-size: 15.71px;">cakephp3</a> <a href="/tags/cardano/" style="font-size: 10px;">cardano</a> <a href="/tags/chef/" style="font-size: 10px;">chef</a> <a href="/tags/chef-dk/" style="font-size: 10px;">chef-dk</a> <a href="/tags/cocktails/" style="font-size: 10px;">cocktails</a> <a href="/tags/composer/" style="font-size: 12.86px;">composer</a> <a href="/tags/crud/" style="font-size: 10px;">crud</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/debian/" style="font-size: 18.57px;">debian</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/dutch/" style="font-size: 10px;">dutch</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/elm/" style="font-size: 10px;">elm</a> <a href="/tags/elm-lang/" style="font-size: 10px;">elm-lang</a> <a href="/tags/ember/" style="font-size: 11.43px;">ember</a> <a href="/tags/emberjs/" style="font-size: 10px;">emberjs</a> <a href="/tags/fim/" style="font-size: 10px;">fim</a> <a href="/tags/foc/" style="font-size: 11.43px;">foc</a> <a href="/tags/foundation/" style="font-size: 10px;">foundation</a> <a href="/tags/git/" style="font-size: 17.14px;">git</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/github-actions/" style="font-size: 10px;">github-actions</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/ipad/" style="font-size: 10px;">ipad</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/json-api/" style="font-size: 10px;">json api</a> <a href="/tags/jsonapi/" style="font-size: 10px;">jsonapi</a> <a href="/tags/jwt/" style="font-size: 10px;">jwt</a> <a href="/tags/kitchen/" style="font-size: 10px;">kitchen</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/microsoft/" style="font-size: 14.29px;">microsoft</a> <a href="/tags/minecraft/" style="font-size: 11.43px;">minecraft</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/mssql/" style="font-size: 10px;">mssql</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/octopress/" style="font-size: 14.29px;">octopress</a> <a href="/tags/octostrap3/" style="font-size: 11.43px;">octostrap3</a> <a href="/tags/office/" style="font-size: 10px;">office</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/phpcs/" style="font-size: 11.43px;">phpcs</a> <a href="/tags/powershell/" style="font-size: 10px;">powershell</a> <a href="/tags/powershell-core/" style="font-size: 10px;">powershell-core</a> <a href="/tags/rest/" style="font-size: 15.71px;">rest</a> <a href="/tags/security/" style="font-size: 11.43px;">security</a> <a href="/tags/server-2012/" style="font-size: 10px;">server-2012</a> <a href="/tags/shellshock/" style="font-size: 10px;">shellshock</a> <a href="/tags/sysop/" style="font-size: 10px;">sysop</a> <a href="/tags/terminal/" style="font-size: 10px;">terminal</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/ubuntu/" style="font-size: 12.86px;">ubuntu</a> <a href="/tags/vagrant/" style="font-size: 10px;">vagrant</a> <a href="/tags/validator/" style="font-size: 11.43px;">validator</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/wheezy/" style="font-size: 14.29px;">wheezy</a> <a href="/tags/windows10/" style="font-size: 11.43px;">windows10</a> <a href="/tags/wsl/" style="font-size: 10px;">wsl</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a>
+  </div>
+</div>
+
+
+  <div class="advertisement">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- bravo-kernel-blog-270 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:270px;height:270px"
+		 data-ad-client="ca-pub-1161412231963156"
+		 data-ad-slot="9643145573"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2021 bravo-kernel
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'bravo-kernel';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

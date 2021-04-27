@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Creating proper Github releases | Bravo Kernel</title>
+  <meta name="author" content="bravo-kernel">
+  
+  <meta name="description" content="Step-by-step instructions for creating Github Releases like the pros.
+Assuming:
+
+a master branch
+a more-or-less stable dev branch ready to be merged i">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Creating proper Github releases"/>
+  <meta property="og:site_name" content="Bravo Kernel"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Bravo Kernel" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <script data-ad-client="ca-pub-1161412231963156" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40048049-1']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Bravo Kernel</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">Feed</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-03-27T18:30:00.000Z"><a href="/2015/03/creating-proper-github-releases/">Mar 27 2015</a></time>
+		
+			<span class="updated" title="Post Updated"><span>Mar 14 2018</span></span>
+        
+		<div class="github-improve"><a target="_blank" rel="noopener" href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-03-27-creating-proper-github-releases.md">Improve on Github</a></div>
+      
+      
+  
+    <h1 class="title">Creating proper Github releases</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Step-by-step instructions for creating Github Releases like the pros.</p>
+<p>Assuming:</p>
+<ul>
+<li>a <code>master</code> branch</li>
+<li>a more-or-less stable <code>dev</code> branch ready to be merged into master</li>
+<li>a <code>VERSION.txt</code> file holding release version</li>
+</ul>
+<p><strong>Pro Tip:</strong> keep release cycles short, release often!</p>
+<h2 id="Creating-the-release"><a href="#Creating-the-release" class="headerlink" title="Creating the release"></a>Creating the release</h2><ol>
+<li>create <code>VERSION.txt</code> in your dev branch and fill it with the release number (e.g. 1.0-alpha1)</li>
+<li>merge the master branch into dev</li>
+<li>merge the dev branch back into master</li>
+<li>go to the Github page holding your project and:<ul>
+<li>select <em>releases</em></li>
+<li>select <em>Draft a new release</em></li>
+<li>fill in 1.0-alpha1 as the <em>Tag version</em> </li>
+<li>target the master branch</li>
+<li>doublecheck before pressing the “Publish release” button</li>
+</ul>
+</li>
+</ol>
+<p>That’s all there’s too it, your first release. </p>
+<p><strong>Note:</strong> to prevent future merge conflicts caused by e.g. bugfixes… regularly merge master into dev!</p>
+<h2 id="Starting-work-on-the-next-release"><a href="#Starting-work-on-the-next-release" class="headerlink" title="Starting work on the next release"></a>Starting work on the next release</h2><p>Now that the release is out, it’s time to start work on the next one</p>
+<ol>
+<li>update <code>VERSION.txt</code> in the dev branch with the next release number (e.g. 1.0-alpha2)</li>
+<li>commit and push change to dev</li>
+<li>add features to your dev branch</li>
+</ol>
+<p>Once you are ready to publish a new release… simply restart <code>Creating the release</code> but skip step 1.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/git/">Git</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/git/">git</a>, <a href="/tags/github/">github</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="sponsor">
+  <h1 class="title">Support this blog</h1>
+
+  <div class="leaderboard">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- bravo-kernel-blog-leaderboard -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1161412231963156"
+         data-ad-slot="4755382371"
+         data-ad-format="auto">
+    </ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+</section>
+
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:bravo-kernel.com">
+  </form>
+</div>
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/git-wheezy/" style="font-size: 10px;">Git -   Wheezy</a> <a href="/tags/api/" style="font-size: 17.14px;">api</a> <a href="/tags/apple/" style="font-size: 10px;">apple</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cakephp/" style="font-size: 20px;">cakephp</a> <a href="/tags/cakephp3/" style="font-size: 15.71px;">cakephp3</a> <a href="/tags/cardano/" style="font-size: 10px;">cardano</a> <a href="/tags/chef/" style="font-size: 10px;">chef</a> <a href="/tags/chef-dk/" style="font-size: 10px;">chef-dk</a> <a href="/tags/cocktails/" style="font-size: 10px;">cocktails</a> <a href="/tags/composer/" style="font-size: 12.86px;">composer</a> <a href="/tags/crud/" style="font-size: 10px;">crud</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/debian/" style="font-size: 18.57px;">debian</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/dutch/" style="font-size: 10px;">dutch</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/elm/" style="font-size: 10px;">elm</a> <a href="/tags/elm-lang/" style="font-size: 10px;">elm-lang</a> <a href="/tags/ember/" style="font-size: 11.43px;">ember</a> <a href="/tags/emberjs/" style="font-size: 10px;">emberjs</a> <a href="/tags/fim/" style="font-size: 10px;">fim</a> <a href="/tags/foc/" style="font-size: 11.43px;">foc</a> <a href="/tags/foundation/" style="font-size: 10px;">foundation</a> <a href="/tags/git/" style="font-size: 17.14px;">git</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/github-actions/" style="font-size: 10px;">github-actions</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/ipad/" style="font-size: 10px;">ipad</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/json-api/" style="font-size: 10px;">json api</a> <a href="/tags/jsonapi/" style="font-size: 10px;">jsonapi</a> <a href="/tags/jwt/" style="font-size: 10px;">jwt</a> <a href="/tags/kitchen/" style="font-size: 10px;">kitchen</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/microsoft/" style="font-size: 14.29px;">microsoft</a> <a href="/tags/minecraft/" style="font-size: 11.43px;">minecraft</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/mssql/" style="font-size: 10px;">mssql</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/octopress/" style="font-size: 14.29px;">octopress</a> <a href="/tags/octostrap3/" style="font-size: 11.43px;">octostrap3</a> <a href="/tags/office/" style="font-size: 10px;">office</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/phpcs/" style="font-size: 11.43px;">phpcs</a> <a href="/tags/powershell/" style="font-size: 10px;">powershell</a> <a href="/tags/powershell-core/" style="font-size: 10px;">powershell-core</a> <a href="/tags/rest/" style="font-size: 15.71px;">rest</a> <a href="/tags/security/" style="font-size: 11.43px;">security</a> <a href="/tags/server-2012/" style="font-size: 10px;">server-2012</a> <a href="/tags/shellshock/" style="font-size: 10px;">shellshock</a> <a href="/tags/sysop/" style="font-size: 10px;">sysop</a> <a href="/tags/terminal/" style="font-size: 10px;">terminal</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/ubuntu/" style="font-size: 12.86px;">ubuntu</a> <a href="/tags/vagrant/" style="font-size: 10px;">vagrant</a> <a href="/tags/validator/" style="font-size: 11.43px;">validator</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/wheezy/" style="font-size: 14.29px;">wheezy</a> <a href="/tags/windows10/" style="font-size: 11.43px;">windows10</a> <a href="/tags/wsl/" style="font-size: 10px;">wsl</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a>
+  </div>
+</div>
+
+
+  <div class="advertisement">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- bravo-kernel-blog-270 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:270px;height:270px"
+		 data-ad-client="ca-pub-1161412231963156"
+		 data-ad-slot="9643145573"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2021 bravo-kernel
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'bravo-kernel';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

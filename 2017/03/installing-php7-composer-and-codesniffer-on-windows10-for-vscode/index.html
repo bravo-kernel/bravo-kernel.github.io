@@ -1,0 +1,397 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Installing PHP7, Composer and CodeSniffer on Windows 10 (for VSCode) | Bravo Kernel</title>
+  <meta name="author" content="bravo-kernel">
+  
+  <meta name="description" content="This post will guide you through clean (non-polluting) Windows 10 installations
+of PHP 7, Composer and PHP CodeSniffer
+and will show you how to integr">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Installing PHP7, Composer and CodeSniffer on Windows 10 (for VSCode)"/>
+  <meta property="og:site_name" content="Bravo Kernel"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Bravo Kernel" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <script data-ad-client="ca-pub-1161412231963156" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-40048049-1']);
+  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Bravo Kernel</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/atom.xml">Feed</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2017-03-12T17:00:00.000Z"><a href="/2017/03/installing-php7-composer-and-codesniffer-on-windows10-for-vscode/">Mar 12 2017</a></time>
+		
+			<span class="updated" title="Post Updated"><span>Jan 18 2020</span></span>
+        
+		<div class="github-improve"><a target="_blank" rel="noopener" href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2017-03-12-installing-php7-composer-and-codesniffer-on-windows10-for-vscode.md">Improve on Github</a></div>
+      
+      
+  
+    <h1 class="title">Installing PHP7, Composer and CodeSniffer on Windows 10 (for VSCode)</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This post will guide you through clean (non-polluting) Windows 10 installations
+of PHP 7, Composer and PHP CodeSniffer
+and will show you how to integrate it all with Visual Studio Code as a bonus.</p>
+<h2 id="1-Installing-PHP"><a href="#1-Installing-PHP" class="headerlink" title="1. Installing PHP"></a>1. Installing PHP</h2><p>First <a href="http://windows.php.net/download" target="_blank" rel="noopener">download</a> one of the PHP binaries suitable for your system
+(we used the 64-bit Thread Safe version of PHP 7.1.2 when creating this post but any version will do).</p>
+<p>Next:</p>
+<ul>
+<li>extract the downloaded zip file</li>
+<li>rename the resultant directory to <code>php-x64</code></li>
+<li>move the renamed directory to <code>&quot;C:\Program Files&quot;</code></li>
+</ul>
+<p><em>FYI: may choose any other directory name but this post will assume PHP installed in <code>&quot;C:\Program Files\php-x64&quot;</code></em></p>
+<h3 id="Enable-OpenSSL"><a href="#Enable-OpenSSL" class="headerlink" title="Enable OpenSSL"></a>Enable OpenSSL</h3><p>PHP will not have OpenSSL enabled by default which will cause Composer errors
+later on so we might as well enable it right now by opening a
+Command Prompt (with elevated admin permissions) and running:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> "C:\Program Files\php-x64"</span><br><span class="line">cp php.ini-production php.ini</span><br></pre></td></tr></table></figure>
+
+<p>Close the Command Prompt and open <code>&quot;C:\Program Files\php-x64\php.ini&quot;</code> with
+your editor to uncomment the following lines:</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">extension_dir</span> = <span class="string">"ext"</span></span><br><span class="line"><span class="attr">extension</span>=php_openssl.dll</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-Installing-Composer"><a href="#2-Installing-Composer" class="headerlink" title="2. Installing Composer"></a>2. Installing Composer</h2><p>Download and run the Composer <a href="https://getcomposer.org/download/" target="_blank" rel="noopener">Windows installer</a>.</p>
+<p>Make sure that the installer detects your PHP installation before completing the installation:</p>
+<img src="/2017/03/installing-php7-composer-and-codesniffer-on-windows10-for-vscode/composer-install-verify-php-detection.png" class="" title="Screenshot of Composer installation detecting PHP">
+
+<p>Good to know:</p>
+<ul>
+<li>the composer binary is found in <code>&quot;C:\ProgramData\ComposerSetup\bin&quot;</code></li>
+<li>the <code>PATH</code> (system) environment variable has been updated to include the above bin directory</li>
+</ul>
+<h3 id="Change-the-global-install-path"><a href="#Change-the-global-install-path" class="headerlink" title="Change the global install path"></a>Change the global install path</h3><p>By default Composer will install <strong>global</strong> packages into
+<code>C:\Users\%username%\AppData\Roaming</code> which can become quite cluttering
+so we change it.</p>
+<ol>
+<li><p>Create new directory <code>&quot;C:\Program Files\php-x64\composer&quot;</code></p>
+</li>
+<li><p>Open the system control panel by pressing <code>WINDOWS KEY</code>+<code>PAUSE/BREAK KEY</code></p>
+</li>
+<li><p>Select <code>Advanced system Settings</code></p>
+</li>
+<li><p>Select <code>Environmental variables</code></p>
+</li>
+<li><p>Under <code>System Variables</code>, press <code>New</code> and enter the following settings:</p>
+<img src="/2017/03/installing-php7-composer-and-codesniffer-on-windows10-for-vscode/composer-global-install-path-env.png" class="" title="Screenshot of new system variable">
+</li>
+<li><p>Select <code>OK</code> to round up this step</p>
+</li>
+</ol>
+<h3 id="Add-vendor-bin-directory-to-PATH"><a href="#Add-vendor-bin-directory-to-PATH" class="headerlink" title="Add vendor bin directory to PATH"></a>Add vendor bin directory to PATH</h3><p>To make sure your system will be able to find composer installed binaries like <code>phpcs</code>
+we will need to add the global vendor directory to the system <code>PATH</code> environment
+variable.</p>
+<ol>
+<li><p>Open the system control panel (WINDOWS KEY +PAUSE/BREAK)</p>
+</li>
+<li><p>Select <code>Advanced system Settings</code></p>
+</li>
+<li><p>Select <code>Environmental variables</code></p>
+</li>
+<li><p>Under <code>System Variables</code>, select existing <code>Path</code> variable</p>
+</li>
+<li><p>Select <code>Edit</code></p>
+</li>
+<li><p>Select <code>New</code> and enter <code>C:\Program Files\php-x64\composer\vendor\bin</code> like shown below:</p>
+<img src="/2017/03/installing-php7-composer-and-codesniffer-on-windows10-for-vscode/composer-global-vendor-bin-path-env.png" class="" title="Screenshot of editing existing PATH system variable">
+</li>
+<li><p>Press <code>OK</code> trice to apply the setting</p>
+</li>
+</ol>
+<p>Make sure to close all open any CMD boxes or they will not
+be aware of the new environment variable.</p>
+<h2 id="3-Installing-PHP-CodeSniffer"><a href="#3-Installing-PHP-CodeSniffer" class="headerlink" title="3. Installing PHP_CodeSniffer"></a>3. Installing PHP_CodeSniffer</h2><p>Open a Command Prompt (without elevated permissions) and run:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">composer global require "squizlabs/php_codesniffer=*"</span><br><span class="line">phpcs --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Installing-additional-Coding-Standards"><a href="#4-Installing-additional-Coding-Standards" class="headerlink" title="4. Installing additional Coding Standards"></a>4. Installing additional Coding Standards</h2><p>Installation instructions will differ per additional coding standard
+so we will just use <a href="https://github.com/cakephp/cakephp-codesniffer" target="_blank" rel="noopener">cakephp-codesniffer</a>
+as an example here.</p>
+<p>Open your global <code>C:\Program Files\php-x64\composer\composer.json</code> file and manually add
+the cakephp-sniffer package so it looks like this:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"require"</span>: &#123;</span><br><span class="line">        <span class="attr">"squizlabs/php_codesniffer"</span>: <span class="string">"*"</span>,</span><br><span class="line">        <span class="attr">"cakephp/cakephp-codesniffer"</span>: <span class="string">"2.*"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Now open a Command Prompt (without elevated permissions) and run the following
+commands to install the coding standard and make the path known to phcs:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">composer global update</span><br><span class="line">phpcs --config-<span class="built_in">set</span> installed_paths "C:\Program Files\php-x64\composer\vendor\cakephp\cakephp-codesniffer"</span><br><span class="line">phpcs --config-show</span><br></pre></td></tr></table></figure>
+
+<p>There is no need to configure the default coding standard as this will be handled on a
+per-project basis inside Visual Studio Code but you are free to do so anyways by
+running:</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">phpcs --config-<span class="built_in">set</span> default_standard CakePHP</span><br></pre></td></tr></table></figure>
+
+<p><em>FYI: all Sniffer settings also in C:\Program Files\php-x64\composer\vendor\squizlabs\php_codesniffer\CodeSniffer.conf</em></p>
+<h2 id="5-Reboot-your-computer"><a href="#5-Reboot-your-computer" class="headerlink" title="5. Reboot your computer"></a>5. Reboot your computer</h2><p>To be absolutely sure all programs and services are aware of the new environment
+variables you should now reboot your computer. <strong>If you are not using Visual Studio
+Code</strong> you may also skip the rest of this tutorial.</p>
+<h2 id="6-Integrating-Composer-with-VSCode"><a href="#6-Integrating-Composer-with-VSCode" class="headerlink" title="6. Integrating Composer with VSCode"></a>6. Integrating Composer with VSCode</h2><p><a href="https://github.com/ikappas" target="_blank" rel="noopener">Ioannis Kappas</a> has created
+a very neat <a href="https://marketplace.visualstudio.com/items?itemName=ikappas.composer" target="_blank" rel="noopener">VSCode composer plugin</a>
+that allows you to lint <code>composer.json</code> files. To set it up:</p>
+<ol>
+<li><p>Open Visual Studio Code</p>
+</li>
+<li><p>Press CTRL+P</p>
+</li>
+<li><p>Paste <code>ext install Composer publisher:&quot;Ioannis Kappas&quot;</code></p>
+</li>
+<li><p>Install the plugin by clicking that green button</p>
+</li>
+<li><p>Reload the window by clicking that blue button to activate the plugin</p>
+</li>
+<li><p>Open the settings window (File &gt; Preferences &gt; Settings)</p>
+</li>
+<li><p>Add the following line to the <code>USER SETTINGS</code> section:</p>
+<p><code>&quot;composer.executablePath&quot;: &quot;c:\\ProgramData\\ComposerSetup\\bin\\composer.bat&quot;</code></p>
+</li>
+</ol>
+<h3 id="Verify"><a href="#Verify" class="headerlink" title="Verify"></a>Verify</h3><p>To verify the plugin is functioning properly:</p>
+<ul>
+<li><p>Open a <code>composer.json</code> file in Visual Studio Code</p>
+</li>
+<li><p>Press F1</p>
+</li>
+<li><p>Type <code>validate</code></p>
+</li>
+<li><p>Select <code>Composer: Validate</code> and pressing enter</p>
+</li>
+<li><p>If things went well you should see something like this:</p>
+
+
+</li>
+</ul>
+<h2 id="7-Integrating-PHP-CodeSniffer-with-VSCode"><a href="#7-Integrating-PHP-CodeSniffer-with-VSCode" class="headerlink" title="7. Integrating PHP CodeSniffer with VSCode"></a>7. Integrating PHP CodeSniffer with VSCode</h2><p>The <a href="https://marketplace.visualstudio.com/items?itemName=ikappas.phpcs" target="_blank" rel="noopener">VSCode phpcs plugin</a>
+is another great add-on by <a href="https://github.com/ikappas" target="_blank" rel="noopener">Ioannis Kappas</a>
+and allows you to check your code against various coding standards.
+To set ip up:</p>
+<ol>
+<li><p>Open Visual Studio Code</p>
+</li>
+<li><p>Press CTRL+P</p>
+</li>
+<li><p>Paste <code>ext install phpcs publisher:&quot;Ioannis Kappas&quot;</code></p>
+</li>
+<li><p>Install the plugin by clicking that green button</p>
+</li>
+<li><p>Reload the window by clicking that blue button to activate the plugin</p>
+<p><em>Please note that code sniffing will be active from this point on.</em></p>
+</li>
+</ol>
+<h3 id="Configure"><a href="#Configure" class="headerlink" title="Configure"></a>Configure</h3><p>Even though you are free to use your own
+<a href="https://marketplace.visualstudio.com/items?itemName=ikappas.phpcs" target="_blank" rel="noopener">configuration strategy</a>
+we will configure the plugin to <strong>disable code sniffing by default</strong>,
+basically requiring you to enable it on a per project/VSCode workspace basis.</p>
+<p>To disable sniffing on the global level:</p>
+<ol>
+<li><p>Open Visual Studio Code</p>
+</li>
+<li><p>Open the settings window (File &gt; Preferences &gt; Settings)</p>
+</li>
+<li><p>Add the following line to the <code>USER SETTINGS</code> section:</p>
+<p><code>&quot;phpcs.enable&quot;: false</code></p>
+</li>
+</ol>
+<p>To enable code sniffing for your project/workspace:</p>
+<ol>
+<li><p>Open Visual Studio Code</p>
+</li>
+<li><p>Open one of your projects/workspaces</p>
+</li>
+<li><p>Open the settings window (File &gt; Preferences &gt; Settings)</p>
+</li>
+<li><p>Add the following lines to the <code>WORKSPACE SETTINGS</code> section:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"phpcs.enable": true,</span><br><span class="line">"phpcs.standard": "CakePHP",</span><br><span class="line">"phpcs.ignore": "config, webroot"</span><br></pre></td></tr></table></figure>
+
+<p><em>Please note that the ignore part is optional and that non-existing directories/files will cause errors.</em></p>
+</li>
+</ol>
+<h3 id="Verify-1"><a href="#Verify-1" class="headerlink" title="Verify"></a>Verify</h3><p>To verify the plugin is functioning properly:</p>
+<ol>
+<li><p>Open one of your projects with Visual Studio Code</p>
+</li>
+<li><p>Open one of your <code>.php</code> files</p>
+</li>
+<li><p>Make a change that will trigger a sniffer violation</p>
+</li>
+<li><p>Save the file (realtime sniffing not supported yet)</p>
+</li>
+<li><p>You should see a red tilde (<code>~</code>) explaining the sniff violation when hovered:</p>
+<img src="/2017/03/installing-php7-composer-and-codesniffer-on-windows10-for-vscode/vscode-phpcs-hover-tilde.png" class="" title="Screenshot of phpcs violation when hovering tilde">
+</li>
+<li><p>The <code>Problems</code> window (View &gt; Problems) should display a summary of all phpcs violations:</p>
+<img src="/2017/03/installing-php7-composer-and-codesniffer-on-windows10-for-vscode/vscode-phpcs-problems-output.png" class="" title="Screenshot of VSCode Problems window listing phpcs violations">
+</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/sysop/">sysop</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/cakephp/">cakephp</a>, <a href="/tags/composer/">composer</a>, <a href="/tags/phpcs/">phpcs</a>, <a href="/tags/windows10/">windows10</a>, <a href="/tags/sysop/">sysop</a>, <a href="/tags/vscode/">vscode</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+<section id="sponsor">
+  <h1 class="title">Support this blog</h1>
+
+  <div class="leaderboard">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- bravo-kernel-blog-leaderboard -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-1161412231963156"
+         data-ad-slot="4755382371"
+         data-ad-format="auto">
+    </ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+</section>
+
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:bravo-kernel.com">
+  </form>
+</div>
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">Tag Cloud</h3>
+  <div class="entry">
+    <a href="/tags/git-wheezy/" style="font-size: 10px;">Git -   Wheezy</a> <a href="/tags/api/" style="font-size: 17.14px;">api</a> <a href="/tags/apple/" style="font-size: 10px;">apple</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cakephp/" style="font-size: 20px;">cakephp</a> <a href="/tags/cakephp3/" style="font-size: 15.71px;">cakephp3</a> <a href="/tags/cardano/" style="font-size: 10px;">cardano</a> <a href="/tags/chef/" style="font-size: 10px;">chef</a> <a href="/tags/chef-dk/" style="font-size: 10px;">chef-dk</a> <a href="/tags/cocktails/" style="font-size: 10px;">cocktails</a> <a href="/tags/composer/" style="font-size: 12.86px;">composer</a> <a href="/tags/crud/" style="font-size: 10px;">crud</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/database/" style="font-size: 10px;">database</a> <a href="/tags/debian/" style="font-size: 18.57px;">debian</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/dutch/" style="font-size: 10px;">dutch</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/elm/" style="font-size: 10px;">elm</a> <a href="/tags/elm-lang/" style="font-size: 10px;">elm-lang</a> <a href="/tags/ember/" style="font-size: 11.43px;">ember</a> <a href="/tags/emberjs/" style="font-size: 10px;">emberjs</a> <a href="/tags/fim/" style="font-size: 10px;">fim</a> <a href="/tags/foc/" style="font-size: 11.43px;">foc</a> <a href="/tags/foundation/" style="font-size: 10px;">foundation</a> <a href="/tags/git/" style="font-size: 17.14px;">git</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/github-actions/" style="font-size: 10px;">github-actions</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/ipad/" style="font-size: 10px;">ipad</a> <a href="/tags/iphone/" style="font-size: 10px;">iphone</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/json-api/" style="font-size: 10px;">json api</a> <a href="/tags/jsonapi/" style="font-size: 10px;">jsonapi</a> <a href="/tags/jwt/" style="font-size: 10px;">jwt</a> <a href="/tags/kitchen/" style="font-size: 10px;">kitchen</a> <a href="/tags/logstash/" style="font-size: 10px;">logstash</a> <a href="/tags/microsoft/" style="font-size: 14.29px;">microsoft</a> <a href="/tags/minecraft/" style="font-size: 11.43px;">minecraft</a> <a href="/tags/misc/" style="font-size: 11.43px;">misc</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/mssql/" style="font-size: 10px;">mssql</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/octopress/" style="font-size: 14.29px;">octopress</a> <a href="/tags/octostrap3/" style="font-size: 11.43px;">octostrap3</a> <a href="/tags/office/" style="font-size: 10px;">office</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/phpcs/" style="font-size: 11.43px;">phpcs</a> <a href="/tags/powershell/" style="font-size: 10px;">powershell</a> <a href="/tags/powershell-core/" style="font-size: 10px;">powershell-core</a> <a href="/tags/rest/" style="font-size: 15.71px;">rest</a> <a href="/tags/security/" style="font-size: 11.43px;">security</a> <a href="/tags/server-2012/" style="font-size: 10px;">server-2012</a> <a href="/tags/shellshock/" style="font-size: 10px;">shellshock</a> <a href="/tags/sysop/" style="font-size: 10px;">sysop</a> <a href="/tags/terminal/" style="font-size: 10px;">terminal</a> <a href="/tags/time/" style="font-size: 10px;">time</a> <a href="/tags/ubuntu/" style="font-size: 12.86px;">ubuntu</a> <a href="/tags/vagrant/" style="font-size: 10px;">vagrant</a> <a href="/tags/validator/" style="font-size: 11.43px;">validator</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/wheezy/" style="font-size: 14.29px;">wheezy</a> <a href="/tags/windows10/" style="font-size: 11.43px;">windows10</a> <a href="/tags/wsl/" style="font-size: 10px;">wsl</a> <a href="/tags/xdebug/" style="font-size: 10px;">xdebug</a>
+  </div>
+</div>
+
+
+  <div class="advertisement">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- bravo-kernel-blog-270 -->
+	<ins class="adsbygoogle"
+		 style="display:inline-block;width:270px;height:270px"
+		 data-ad-client="ca-pub-1161412231963156"
+		 data-ad-slot="9643145573"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2021 bravo-kernel
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'bravo-kernel';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
